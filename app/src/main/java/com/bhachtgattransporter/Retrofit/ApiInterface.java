@@ -1,10 +1,15 @@
 package com.bhachtgattransporter.Retrofit;
 
+import com.bhachtgattransporter.Model.AllList;
+import com.bhachtgattransporter.Model.BidData;
 import com.bhachtgattransporter.Model.LoginResponse;
 import com.bhachtgattransporter.Model.StatusResponse;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -42,6 +47,22 @@ public interface ApiInterface {
     Call<JSONObject> sendSMS(@Query("number") String mobileNumber,
                              @Query("message") String message);
 
+    @FormUrlEncoded
+    @POST("/androidApp/Transporter/biddedOrder.php")
+    Call<StatusResponse> biddedOrder(@Field("vendor_id") String deliveryBoyId, @Field("id") String orderId, @Field("bid_amount") String bid_amount);
 
-    Call<StatusResponse> biddedOrder(String vendor_id, String id, String bid);
+
+
+    @GET("/androidApp/Transporter/RaisedOrder.php")
+    Call<AllList> raisedOrderList(@Query("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("/Qsar/DeliveryBoy/OrderBidding.php")
+    Call<BidData> getBidding(@Query("userId") String userId);
+
+
+    @FormUrlEncoded
+    @POST("UpdateVendorBid.php")
+    Call<StatusResponse> UpdateVendorBid(@Field("order_id") String order_id, @Field("vendor_id") String vendor_id, @Field("bid_amount") String bid_amount);
+
 }

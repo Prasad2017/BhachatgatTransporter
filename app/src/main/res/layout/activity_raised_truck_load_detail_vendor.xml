@@ -62,7 +62,7 @@
                 android:id="@+id/order_title"
                 android:textSize="25sp"
                 android:textColor="@color/black"
-                android:hint="QSRTRK/07-2019/0001"
+                android:hint="GRMVK/07-2020/0001"
                 android:layout_width="match_parent"
                 android:fontFamily="@font/montserratmedium"
                 android:layout_gravity="center"
@@ -301,7 +301,7 @@
                             android:layout_marginBottom="7dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/montserratmedium"
-                            android:text="Truck Type : "/>
+                            android:text="Product Type : "/>
 
                         <TextView
                             android:layout_toRightOf="@+id/alerAdd"
@@ -358,89 +358,6 @@
                             android:textSize="16sp"
                             android:textColor="@color/black"
                             android:id="@+id/weight"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/montserratmedium"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginBottom="7dp"
-                            android:hint="-"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_below="@+id/t1"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:gravity="center|left"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
-                            android:layout_marginBottom="7dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/montserratmedium"
-                            android:text="Material Type : "/>
-
-                        <TextView
-                            android:layout_toRightOf="@+id/alerAdd"
-                            android:layout_below="@+id/t2"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:gravity="center|left"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
-                            android:id="@+id/material"
-                            android:singleLine="true"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/montserratmedium"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginBottom="7dp"
-                            android:hint="-"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_below="@+id/t1"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:gravity="center|left"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
-                            android:layout_marginBottom="7dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/montserratmedium"
-                            android:text="Remark"/>
-
-                        <TextView
-                            android:layout_toRightOf="@+id/alerAdd"
-                            android:layout_below="@+id/t2"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:gravity="center|left"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
-                            android:id="@+id/remark"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserratmedium"
                             android:layout_alignParentRight="true"

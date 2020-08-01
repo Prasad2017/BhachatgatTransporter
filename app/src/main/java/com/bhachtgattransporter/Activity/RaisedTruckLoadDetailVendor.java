@@ -79,7 +79,7 @@ import retrofit2.Response;
 public class RaisedTruckLoadDetailVendor extends FragmentActivity implements DirectionFinderListener {
 
     @BindViews({R.id.order_title, R.id.date, R.id.Name, R.id.Number, R.id.alerAdd, R.id.deliveryAdd, R.id.timer, R.id.type,
-            R.id.weight, R.id.material, R.id.remark})
+            R.id.weight})
     List<TextView> textView;
     @BindView(R.id.back)
     ImageView imageView;
@@ -109,7 +109,7 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
     LayoutInflater inflater1;
     View dialogView1;
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    public String TruckOrderCountURL = "http://softmate.in/androidApp/Qsar/DeliveryBoy/CheckedCount.php";
+    public String TruckOrderCountURL = "http://graminvikreta.com/androidApp/Transporter/CheckedCount.php";
 
 
 
@@ -131,22 +131,15 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
 
             userId  = Common.getSavedUserData(RaisedTruckLoadDetailVendor.this,"userId");
 
-            OrdrId = TruckLoadOrderAdapter.OrdrId;
-            order_title = TruckLoadOrderAdapter.order_title;
+            OrdrId = TruckLoadOrderAdapter.orderId;
+            order_title = TruckLoadOrderAdapter.orderNumber;
             date = TruckLoadOrderAdapter.date;
-            total_amount = TruckLoadOrderAdapter.total_amount;
-            user_name = TruckLoadOrderAdapter.user_name;
-            source_contact = TruckLoadOrderAdapter.source_contact;
-            total_km = TruckLoadOrderAdapter.total_km;
-            c_pickup_location = TruckLoadOrderAdapter.c_pickup_location;
-            c_delivery_location = TruckLoadOrderAdapter.c_delivery_location;
-            movers_date = TruckLoadOrderAdapter.movers_date;
-            time1 = movers_date + " " + TruckLoadOrderAdapter.endtime;
-
-            type = TruckLoadOrderAdapter.truck_type;
-            weight = TruckLoadOrderAdapter.tot_weight;
-            material = TruckLoadOrderAdapter.material_type;
-            remark = TruckLoadOrderAdapter.remark;
+            total_amount = TruckLoadOrderAdapter.totalAmount;
+            user_name = TruckLoadOrderAdapter.fullName;
+            source_contact = TruckLoadOrderAdapter.mobilNumber;
+            c_pickup_location = TruckLoadOrderAdapter.billingAddress;
+            c_delivery_location = TruckLoadOrderAdapter.billingAddress;
+            type = TruckLoadOrderAdapter.productName;
 
             textView.get(0).setText(order_title);
             textView.get(1).setText(date);
@@ -156,9 +149,6 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
             textView.get(5).setText(c_delivery_location);
 
             textView.get(7).setText(type);
-            textView.get(8).setText(weight);
-            textView.get(9).setText(material);
-            textView.get(10).setText(remark);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -311,7 +301,7 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
     protected void onStart() {
         super.onStart();
         if (DetectConnection.checkInternetConnection(getApplicationContext())){
-            getCheckCount();
+           // getCheckCount();
         }
     }
 
@@ -348,23 +338,21 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
 
     private void getorderBidded(final Context context, final String id, String bid) {
 
-
-        ApiInterface apiService = Api.getClient().create(ApiInterface.class);
-        String OrdrId = id;
         String vendor_id = Common.getSavedUserData(RaisedTruckLoadDetailVendor.this,"userId");
 
+        ApiInterface apiService = Api.getClient().create(ApiInterface.class);
         Call<StatusResponse> call = apiService.biddedOrder(vendor_id, id, bid);
         call.enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                 if (response.isSuccessful()) {
-                   /* if (data.getSuccess().equalsIgnoreCase("1")) {
-                        Toast.makeText(context, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (response.body().getSuccess().equalsIgnoreCase("1")) {
+                        Toast.makeText(context, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RaisedTruckLoadDetailVendor.this, MainPage.class);
                         startActivity(intent);
-                    } else if (data.getSuccess().equalsIgnoreCase("0")) {
-                        Toast.makeText(context, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
-                    }*/
+                    } else if (response.body().getSuccess().equalsIgnoreCase("0")) {
+                        Toast.makeText(context, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }

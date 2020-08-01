@@ -28,7 +28,7 @@ public class Api {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://logic-fort.com/")
+                    .baseUrl("http://graminvikreta.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient)
                     .build();

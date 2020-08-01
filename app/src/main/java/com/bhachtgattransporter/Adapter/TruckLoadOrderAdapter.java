@@ -1,6 +1,7 @@
 package com.bhachtgattransporter.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhachtgattransporter.Activity.MainPage;
+import com.bhachtgattransporter.Activity.RaisedTruckLoadDetailVendor;
 import com.bhachtgattransporter.Fragment.Home;
 import com.bhachtgattransporter.Model.Order;
 import com.bhachtgattransporter.R;
@@ -31,12 +33,10 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
 
     public static List<Order> itemsList;
     Context context;
-    public static String OrdrId,order_title,date, order_status, total_amount, user_name,source_contact,total_km, c_pickup_location, c_delivery_location,
-            movers_image,specification, movers_date , time2, endtime;
-    public static String truck_type, material_type, tot_weight, remark;
+    public static String orderId, orderNumber, date, fullName, mobilNumber, totalAmount,billingAddress, productName;
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    public static String DeleteOrderURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/Delete_Order.php";
+    public static String DeleteOrderURL="http://graminvikreta.com/androidApp/Transporter//Delete_Order.php";
 
 
     public TruckLoadOrderAdapter(List<Order> itemsList, Context context) {
@@ -54,40 +54,31 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
 
     @Override public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-      /*  holder.txtorder_id.setText(itemsList.get(position).getOrder_title());
-        holder.txtamount.setText("Rs. 0");
-        holder.pickupadd1.setText(itemsList.get(position).getC_pickup_location() );
-        holder.deliveryadd1.setText(itemsList.get(position).getC_delivery_location() );
+        holder.txtorder_id.setText(itemsList.get(position).getOrderNumber());
+        holder.txtamount.setText(MainPage.currency+" 0");
+        holder.pickupadd1.setText(itemsList.get(position).getBillingAddress() );
+        holder.deliveryadd1.setText(itemsList.get(position).getBillingAddress() );
         holder.date2.setText(itemsList.get(position).getDate() );
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                OrdrId = itemsList.get(position).getId();
-                order_title = itemsList.get(position).getOrder_title();
+                orderId = itemsList.get(position).getMasterBidId();
+                orderNumber = itemsList.get(position).getOrderNumber();
                 date = itemsList.get(position).getDate();
-                total_amount = itemsList.get(position).getTotal_amount();
-                user_name = itemsList.get(position).getUser_name();
-                source_contact = itemsList.get(position).getSource_contact();
-                total_km = itemsList.get(position).getTotal_km();
-                c_pickup_location = itemsList.get(position).getC_pickup_location();
-                c_delivery_location = itemsList.get(position).getC_delivery_location();
-                movers_image = itemsList.get(position).getMovers_image();
-                movers_date = itemsList.get(position).getMovers_date();
-                time2 = itemsList.get(position).getTime();
-                endtime = itemsList.get(position).getEnd_time();
+                totalAmount = itemsList.get(position).getProductBidAmount();
+                fullName = itemsList.get(position).getFullName();
+                mobilNumber = itemsList.get(position).getMobileno();
+                billingAddress = itemsList.get(position).getBillingAddress();
+                productName = itemsList.get(position).getProduct_name();
 
-                truck_type = itemsList.get(position).getTruck_type();
-                tot_weight = itemsList.get(position).getTruck_weight();
-                material_type = itemsList.get(position).getMaterial();
-                remark = itemsList.get(position).getRemark();
 
                 Intent intent = new Intent(context, RaisedTruckLoadDetailVendor.class);
                 context.startActivity(intent);
 
             }
-        });*/
+        });
 
 
         holder.txtdelete.setOnClickListener(new View.OnClickListener() {

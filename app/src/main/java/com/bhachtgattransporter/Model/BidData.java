@@ -3,14 +3,19 @@ package com.bhachtgattransporter.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StatusResponse {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class BidData {
 
     @SerializedName("success")
     @Expose
     private String success;
-    @SerializedName("message")
+    @SerializedName("orderdata")
     @Expose
-    private String message;
+    private List<DeliverStock> orderdata = null;
+
 
 
     public String getSuccess() {
@@ -21,11 +26,11 @@ public class StatusResponse {
         this.success = success;
     }
 
-    public String getMessage() {
-        return message;
+    public List<DeliverStock> getOrderdata() {
+        return orderdata;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setOrderdata(List<DeliverStock> orderdata) {
+        this.orderdata = orderdata;
     }
 }

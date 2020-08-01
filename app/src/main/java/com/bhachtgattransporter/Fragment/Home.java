@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,14 +26,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhachtgattransporter.Activity.Login;
 import com.bhachtgattransporter.Activity.MainPage;
 import com.bhachtgattransporter.Adapter.MyOrdersAdapter;
 import com.bhachtgattransporter.Adapter.TruckLoadOrderAdapter;
 import com.bhachtgattransporter.Extra.DetectConnection;
+import com.bhachtgattransporter.Model.AllList;
+import com.bhachtgattransporter.Model.BidData;
+import com.bhachtgattransporter.Model.DeliverStock;
 import com.bhachtgattransporter.Model.Order;
 import com.bhachtgattransporter.Model.RaisedOrderData;
 import com.bhachtgattransporter.Model.StockData;
 import com.bhachtgattransporter.R;
+import com.bhachtgattransporter.Retrofit.Api;
+import com.bhachtgattransporter.Retrofit.ApiInterface;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -45,8 +52,10 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -72,6 +81,9 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Home extends Fragment {
 
@@ -88,10 +100,8 @@ public class Home extends Fragment {
     TruckLoadOrderAdapter truckLoadOrderAdapter;
     SupportMapFragment mapFragment;
     List<Order> truckList = new ArrayList<>();
-    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    public String TruckOrder = "http://softmate.in/androidApp/Qsar/DeliveryBoy/RaisedTruckLoad.php";
-    public String getProfile = "http://softmate.in/androidApp/Qsar/DeliveryBoy/GetProfile.php";
-    public String AddLocationURl = "http://softmate.in/androidApp/Qsar/DeliveryBoy/AddLocation.php";
+    public String getProfile = "http://graminvikreta.com/androidApp/Transporter/GetProfile.php";
+    public String AddLocationURl = "http://graminvikreta.com/androidApp/Transporter/AddLocation.php";
     // location last updated time
     private String mLastUpdateTime;
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
@@ -107,8 +117,8 @@ public class Home extends Fragment {
     MyOrdersAdapter myOrdersAdapter;
     Double userLatitude, userLogitude;
     public List<RaisedOrderData> clientList;
-    public List<RaisedOrderData> movieList = new ArrayList();
-    public static StockData mybiddingResponse;
+    public static BidData mybiddingResponse;
+    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
 
     @Override
@@ -123,8 +133,8 @@ public class Home extends Fragment {
             public void onRefresh() {
                 if (DetectConnection.checkInternetConnection(getActivity())) {
                       getOrderRaised();
-                    //    getProfile();
-                    //  StockList();
+                       getProfile();
+                       getBidOrderList();
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
                     Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
@@ -140,62 +150,32 @@ public class Home extends Fragment {
 
     }
 
-    private void getOrderRaised() {
-
-        recyclerView.clearOnScrollListeners();
-        truckList.clear();
+    private void getProfile() {
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("vendorId", MainPage.userId);
+        requestParams.put("userId", MainPage.userId);
 
-        asyncHttpClient.get(TruckOrder, requestParams, new AsyncHttpResponseHandler() {
+        asyncHttpClient.get(getProfile, requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String s = new String(responseBody);
                 try {
                     JSONObject jsonObject = new JSONObject(s);
-                    JSONArray jsonArray = jsonObject.getJSONArray("getdatas");
+                    JSONArray jsonArray = jsonObject.getJSONArray("success");
                     if (jsonArray.length()==0){
-
-                        textViews.get(0).setVisibility(View.GONE);
-                        cardViews.get(0).setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Currently there is no order", Toast.LENGTH_SHORT).show();
-
+                        //getLocation();
                     }else {
-                        for (int i = 0; i < jsonArray.length(); i++) {
+                        for (int i=0;i<jsonArray.length();i++){
+
                             jsonObject = jsonArray.getJSONObject(i);
+                            MainPage.name = jsonObject.getString("first_name")+" "+ jsonObject.getString("last_name");
+                            MainPage.contact = jsonObject.getString("contact");
+                            MainPage.email = jsonObject.getString("email");
+                            MainPage.address = jsonObject.getString("address");
+                            MainPage.pancardNumber = jsonObject.getString("pancard_number");
+                            MainPage.gstNumber = jsonObject.getString("gst_number");
 
-
-                            /*Truck truck = new Truck();
-                            truck.setId(jsonObject.getString("id"));
-                            truck.setUser_name(jsonObject.getString("user_name"));
-                            truck.setOrder_title(jsonObject.getString("order_title"));
-                            truck.setDate(jsonObject.getString("date"));
-                            truck.setTime(jsonObject.getString("time"));
-                            truck.setEnd_time(jsonObject.getString("end_time"));
-                            truck.setSource_contact(jsonObject.getString("source_contact"));
-                            truck.setC_pickup_location(jsonObject.getString("c_pickup_location"));
-                            truck.setC_delivery_location(jsonObject.getString("c_delivery_location"));
-                            truck.setMovers_date(jsonObject.getString("movers_date"));
-                            truck.setTruck_type(jsonObject.getString("truck_type"));
-                            truck.setMaterial(jsonObject.getString("material_type"));
-                            truck.setTruck_weight(jsonObject.getString("tot_weight"));
-                            truck.setRemark(jsonObject.getString("add_note"));
-
-                            truckList.add(truck);*/
-
-                            //Set Adapter...
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                            recyclerView.setLayoutManager(linearLayoutManager);
-                            truckLoadOrderAdapter = new TruckLoadOrderAdapter(truckList, getActivity());
-                            recyclerView.setAdapter(truckLoadOrderAdapter);
-                            truckLoadOrderAdapter.notifyDataSetChanged();
-                            recyclerView.setHasFixedSize(true);
-
-                            textViews.get(0).setVisibility(View.VISIBLE);
-                            cardViews.get(0).setVisibility(View.VISIBLE);
-
+                           // getLocation();
                         }
                     }
                 } catch (JSONException e) {
@@ -205,9 +185,171 @@ public class Home extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //TastyToast.makeText(getActivity(),"Server Error", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
+               // getLocation();
+            }
+        });
+
+    }
+
+    private void getLocation() {
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("userId", MainPage.userId);
+        requestParams.put("userLatitude", userLatitude+"");
+        requestParams.put("userLongitude", userLogitude+"");
+
+        asyncHttpClient.post(AddLocationURl, requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.getString("success").equalsIgnoreCase("1")){
+                        Log.e("Location","Successfully Location");
+                        getBidOrderList();
+                    }else if (jsonObject.getString("success").equalsIgnoreCase("0")){
+                        Log.e("Location",""+jsonObject.getString("message"));
+                        getBidOrderList();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("Location","Server Error");
+                getBidOrderList();
+            }
+        });
+
+    }
+
+    public void onStart() {
+        super.onStart();
+        Log.d("onStart", "called");
+        MainPage.title.setVisibility(View.GONE);
+        ((MainPage) getActivity()).lockUnlockDrawer(DrawerLayout.LOCK_MODE_UNLOCKED);
+        MainPage.drawerLayout.closeDrawers();
+        if (DetectConnection.checkInternetConnection(getActivity())){
+            if (MainPage.userId.equalsIgnoreCase("")) {
+                startActivity(new Intent(getActivity(), Login.class));
+            }else {
+                getOrderRaised();
+                getBidOrderList();
+                getProfile();
+            }
+        }else {
+            Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+
+    public void stopLocationUpdates() {
+        // Removing location updates
+        mFusedLocationClient
+                .removeLocationUpdates(mLocationCallback)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
+    }
+
+
+    private void getBidOrderList() {
+
+       try{
+
+           ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+           Call<BidData> call = apiInterface.getBidding(MainPage.userId);
+           call.enqueue(new Callback<BidData>() {
+               @Override
+               public void onResponse(Call<BidData> call, Response<BidData> response) {
+
+                   if (response.body().getSuccess().equalsIgnoreCase("true")) {
+                       try {
+
+                           mybiddingResponse = response.body();
+                           LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                           linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                           acceptsimpleListView.setLayoutManager(linearLayoutManager);
+                           myOrdersAdapter = new MyOrdersAdapter(getActivity(), mybiddingResponse.getOrderdata());
+                           acceptsimpleListView.setAdapter(myOrdersAdapter);
+                           myOrdersAdapter.notifyDataSetChanged();
+                           acceptsimpleListView.setHasFixedSize(true);
+                           cardViews.get(1).setVisibility(View.VISIBLE);
+                       } catch (Exception e) {
+                           cardViews.get(1).setVisibility(View.GONE);
+                       }
+                   }else {
+                       cardViews.get(1).setVisibility(View.GONE);
+                   }
+
+               }
+
+               @Override
+               public void onFailure(Call<BidData> call, Throwable t) {
+                   cardViews.get(1).setVisibility(View.GONE);
+               }
+           });
+
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
+    }
+
+    private void getOrderRaised() {
+
+        recyclerView.clearOnScrollListeners();
+        truckList.clear();
+
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<AllList> call = apiInterface.raisedOrderList(MainPage.userId);
+        call.enqueue(new Callback<AllList>() {
+            @Override
+            public void onResponse(Call<AllList> call, Response<AllList> response) {
+
+                AllList allList = response.body();
+                truckList = allList.getGetdatas();
+                if (truckList.size()<1){
+                    textViews.get(0).setVisibility(View.GONE);
+                    cardViews.get(0).setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Currently there is no order", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Set Adapter...
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    truckLoadOrderAdapter = new TruckLoadOrderAdapter(truckList, getActivity());
+                    recyclerView.setAdapter(truckLoadOrderAdapter);
+                    truckLoadOrderAdapter.notifyDataSetChanged();
+                    recyclerView.setHasFixedSize(true);
+
+                    textViews.get(0).setVisibility(View.VISIBLE);
+                    cardViews.get(0).setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllList> call, Throwable t) {
                 textViews.get(0).setVisibility(View.GONE);
                 cardViews.get(0).setVisibility(View.GONE);
-                // TastyToast.makeText(getActivity(), "Order Server Error", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
             }
         });
 
