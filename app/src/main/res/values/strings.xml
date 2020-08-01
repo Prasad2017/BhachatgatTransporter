@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Transporter</string>
+    <string name="enter_your_an_otp_and_we_will_verify_an_otp_to_change_the_password">Enter your an OTP and we will verify an OTP to change the password</string>
+    <string name="you_are_not_a_member_register">You are not a member? <b><font fgcolor='#3CDA85'>Register.</font></b></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
