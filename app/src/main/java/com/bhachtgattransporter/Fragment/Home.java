@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhachtgattransporter.Activity.MainPage;
 import com.bhachtgattransporter.Adapter.MyOrdersAdapter;
 import com.bhachtgattransporter.Adapter.TruckLoadOrderAdapter;
 import com.bhachtgattransporter.Extra.DetectConnection;
@@ -54,6 +56,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -63,6 +71,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 public class Home extends Fragment {
 
@@ -88,7 +97,6 @@ public class Home extends Fragment {
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     private static final int REQUEST_CHECK_SETTINGS = 100;
-
     // bunch of location related apis
     private FusedLocationProviderClient mFusedLocationClient;
     private SettingsClient mSettingsClient;
@@ -96,7 +104,7 @@ public class Home extends Fragment {
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
-     MyOrdersAdapter myOrdersAdapter;
+    MyOrdersAdapter myOrdersAdapter;
     Double userLatitude, userLogitude;
     public List<RaisedOrderData> clientList;
     public List<RaisedOrderData> movieList = new ArrayList();
@@ -114,7 +122,7 @@ public class Home extends Fragment {
             @Override
             public void onRefresh() {
                 if (DetectConnection.checkInternetConnection(getActivity())) {
-                    //  getOrderRaised();
+                      getOrderRaised();
                     //    getProfile();
                     //  StockList();
                     swipeRefreshLayout.setRefreshing(false);
@@ -129,6 +137,79 @@ public class Home extends Fragment {
         requestPermission();
 
         return view;
+
+    }
+
+    private void getOrderRaised() {
+
+        recyclerView.clearOnScrollListeners();
+        truckList.clear();
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("vendorId", MainPage.userId);
+
+        asyncHttpClient.get(TruckOrder, requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray jsonArray = jsonObject.getJSONArray("getdatas");
+                    if (jsonArray.length()==0){
+
+                        textViews.get(0).setVisibility(View.GONE);
+                        cardViews.get(0).setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Currently there is no order", Toast.LENGTH_SHORT).show();
+
+                    }else {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+
+
+                            /*Truck truck = new Truck();
+                            truck.setId(jsonObject.getString("id"));
+                            truck.setUser_name(jsonObject.getString("user_name"));
+                            truck.setOrder_title(jsonObject.getString("order_title"));
+                            truck.setDate(jsonObject.getString("date"));
+                            truck.setTime(jsonObject.getString("time"));
+                            truck.setEnd_time(jsonObject.getString("end_time"));
+                            truck.setSource_contact(jsonObject.getString("source_contact"));
+                            truck.setC_pickup_location(jsonObject.getString("c_pickup_location"));
+                            truck.setC_delivery_location(jsonObject.getString("c_delivery_location"));
+                            truck.setMovers_date(jsonObject.getString("movers_date"));
+                            truck.setTruck_type(jsonObject.getString("truck_type"));
+                            truck.setMaterial(jsonObject.getString("material_type"));
+                            truck.setTruck_weight(jsonObject.getString("tot_weight"));
+                            truck.setRemark(jsonObject.getString("add_note"));
+
+                            truckList.add(truck);*/
+
+                            //Set Adapter...
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                            recyclerView.setLayoutManager(linearLayoutManager);
+                            truckLoadOrderAdapter = new TruckLoadOrderAdapter(truckList, getActivity());
+                            recyclerView.setAdapter(truckLoadOrderAdapter);
+                            truckLoadOrderAdapter.notifyDataSetChanged();
+                            recyclerView.setHasFixedSize(true);
+
+                            textViews.get(0).setVisibility(View.VISIBLE);
+                            cardViews.get(0).setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                textViews.get(0).setVisibility(View.GONE);
+                cardViews.get(0).setVisibility(View.GONE);
+                // TastyToast.makeText(getActivity(), "Order Server Error", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
+            }
+        });
 
     }
 

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:elevation="5dp"
+        android:layout_margin="7dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/LinearLayout">
+
+                <LinearLayout
+                    android:padding="1dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@+id/forwardarrow"
+                    android:layout_height="wrap_content">
+
+
+                    <RelativeLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="5dp"
+                            android:paddingLeft="5dp"
+                            android:id="@+id/OrderNo2"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:hint="RDGTRK/06-2019/001"
+                            android:fontFamily="@font/montserratmedium"
+                            android:layout_weight="1"
+                            android:gravity="left|center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:layout_toLeftOf="@+id/date2" />
+
+                        <TextView
+                            android:layout_alignParentRight="true"
+                            android:textSize="16sp"
+                            android:text="21Feb 2018"
+                            android:id="@+id/date2"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:layout_gravity="center"
+                            android:gravity="center|right"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserratmedium"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/rate2"
+                            android:textSize="14sp"
+                            android:textColor="@color/dark_red"
+                            android:hint="000"
+                            android:fontFamily="@font/montserratmedium"
+                            android:textAlignment="center"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:singleLine="true" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/invoises_order_date"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textSize="18sp"
+                            android:hint="123456"
+                            android:paddingLeft="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            android:fontFamily="@font/montserratmedium"
+                            android:textColor="@color/black"/>
+
+
+                        <LinearLayout
+                            android:id="@+id/PickL2"
+                            android:layout_below="@+id/PickL4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:tint="@color/main_cyan_color"
+                                    android:src="@drawable/location" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:textStyle="bold"
+                                    android:textSize="16dp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/montserratmedium"
+                                    android:text="Pickup Point"/>
+                                <TextView
+                                    android:id="@+id/pickUpTime1"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:textStyle="bold"
+                                    android:textSize="16dp"
+                                    android:text=""/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/pickupadd1"
+                                android:layout_width="350dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center|left"
+                                android:textColor="@color/black"
+                                android:maxLines="2"
+                                android:textStyle="bold"
+                                android:inputType="textMultiLine"
+                                android:scrollbars="vertical"
+                                android:textSize="14sp"
+                                android:imeOptions="actionNext"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:tint="@color/colorPrimary"
+                                    android:src="@drawable/location" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:textStyle="bold"
+                                    android:textSize="16dp"
+                                    android:fontFamily="@font/montserratmedium"
+                                    android:textColor="@color/black"
+                                    android:text="Deliver Point"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/deliveryadd1"
+                                android:layout_width="350dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center|left"
+                                android:textColor="@color/black"
+                                android:maxLines="2"
+                                android:textStyle="bold"
+                                android:inputType="textMultiLine"
+                                android:scrollbars="vertical"
+                                android:textSize="14sp"
+                                android:imeOptions="actionNext"/>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtdelete"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="3dp"
+                android:text="Delete Order"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:background="@color/black_overlay"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+

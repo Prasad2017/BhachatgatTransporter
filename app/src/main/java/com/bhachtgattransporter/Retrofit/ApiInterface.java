@@ -1,6 +1,7 @@
 package com.bhachtgattransporter.Retrofit;
 
 import com.bhachtgattransporter.Model.LoginResponse;
+import com.bhachtgattransporter.Model.StatusResponse;
 
 import org.json.JSONObject;
 
@@ -42,4 +43,5 @@ public interface ApiInterface {
                              @Query("message") String message);
 
 
+    Call<StatusResponse> biddedOrder(String vendor_id, String id, String bid);
 }
