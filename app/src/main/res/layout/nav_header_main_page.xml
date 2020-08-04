@@ -92,7 +92,7 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                 android:layout_gravity="center"
-                android:tint="@color/grey"
+                android:tint="#FAFAFA"
                 android:layout_marginRight="3dp"/>
 
 

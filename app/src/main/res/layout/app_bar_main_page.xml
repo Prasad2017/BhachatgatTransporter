@@ -42,6 +42,20 @@
                 android:tint="@color/white"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/back"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserratmedium"
+                tools:ignore="RtlHardcoded" />
+
         </RelativeLayout>
 
 

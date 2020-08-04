@@ -43,6 +43,11 @@
             android:windowSoftInputMode="adjustResize"
             tools:ignore="InnerclassSeparator"/>
 
+        <activity android:name=".Activity.RaisedTruckLoadDetailVendor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="InnerclassSeparator"/>
+
         <activity android:name="com.graminvikreta_transporter.Activity.Registration"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
@@ -59,6 +64,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCrDPKFSqDEqDpZJ0IuxrUCe4f29Ui0biY" />
+        <!--            android:value="AIzaSyAAl7O1uzwoeS5l6D6uNjCkQvp5dumWFAQ" />-->
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
     </application>
 
 </manifest>

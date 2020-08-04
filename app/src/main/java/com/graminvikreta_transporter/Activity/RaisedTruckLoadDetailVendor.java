@@ -137,7 +137,7 @@ public class RaisedTruckLoadDetailVendor extends FragmentActivity implements Dir
             total_amount = TruckLoadOrderAdapter.totalAmount;
             user_name = TruckLoadOrderAdapter.fullName;
             source_contact = TruckLoadOrderAdapter.mobilNumber;
-            c_pickup_location = TruckLoadOrderAdapter.billingAddress;
+            c_pickup_location = TruckLoadOrderAdapter.source_address;
             c_delivery_location = TruckLoadOrderAdapter.billingAddress;
             type = TruckLoadOrderAdapter.productName;
 

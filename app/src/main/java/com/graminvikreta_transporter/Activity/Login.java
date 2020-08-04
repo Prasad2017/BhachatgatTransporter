@@ -4,12 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.graminvikreta_transporter.Extra.Common;
 import com.graminvikreta_transporter.Model.LoginResponse;
 import com.graminvikreta_transporter.R;
 import com.graminvikreta_transporter.Retrofit.Api;
@@ -34,12 +41,23 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
@@ -48,6 +66,8 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import cz.msebera.android.httpclient.Header;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +89,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
     CountDownTimer cTimer = null;
     String otpCode, OTP;
     private String HASH_KEY;
+    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
 
     @Override
@@ -123,6 +146,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
             }
         });
 
+        File file = new File("data/data/com.graminvikreta_transporter/shared_prefs/user.xml");
+        if (file.exists()) {
+            Intent intent = new Intent(Login.this, MainPage.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @OnClick({R.id.submit, R.id.verify, R.id.signIn})
@@ -167,6 +197,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
 
                 if(response.body().getStatus().equals("true")){
                     Toast.makeText(Login.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    editor = pref.edit();
+                    editor.putString("AdminLogin","AdminLoginSuccessful");
+                    editor.commit();
+
+
+
+                    String id = response.body().getUserId();
+                    Log.e("id",""+id);
+
+                    Common.saveUserData(Login.this,"userId",id);
+                    // Config.moveTo(VerificationActivity.this,MainPage.class);
+                    Intent intent = new Intent(Login.this, MainPage.class);
+                    startActivity(intent);
+                    finishAffinity();
+
                 } else  if(response.body().getStatus().equals("false")){
                     Toast.makeText(Login.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -186,7 +232,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         HASH_KEY = (String) new AppSignatureHelper(this).getAppSignatures().get(0);
         HASH_KEY = HASH_KEY.replace("+", "%252B");
         OTP= new DecimalFormat("0000").format(new Random().nextInt(9999));
-        String message = "<#> Your Bachatgat verification OTP code is "+ OTP +". Code valid for 10 minutes only, one time use. Please DO NOT share this OTP with anyone.\n" + HASH_KEY;
+        String message = "<#> Your Gramin Vikreta verification OTP code is "+ OTP +". Please DO NOT share this OTP with anyone.\n" + HASH_KEY;
+        String encoded_message= URLEncoder.encode(message);
+        Log.e("Message", ""+encoded_message);
 
         ProgressDialog progressDialog = new ProgressDialog(Login.this);
         progressDialog.setMessage("Loading...");
@@ -195,7 +243,49 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         progressDialog.show();
         progressDialog.setCancelable(false);
 
-        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("number", mobileNumber);
+        requestParams.put("message", encoded_message);
+
+        asyncHttpClient.get("http://graminvikreta.com/androidApp/Supplier/sendSMS.php", requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                String s = new String(responseBody);
+
+                try {
+                    JSONObject jsonObject= new JSONObject(s);
+                    if (jsonObject.getString("success").equals("1")){
+                        progressDialog.dismiss();
+
+                        linearLayouts.get(0).setVisibility(View.GONE);
+                        linearLayouts.get(1).setVisibility(View.VISIBLE);
+                        Toast.makeText(Login.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
+                        startSMSListener();
+                    } else {
+                        progressDialog.dismiss();
+
+                        linearLayouts.get(1).setVisibility(View.GONE);
+                        linearLayouts.get(0).setVisibility(View.VISIBLE);
+                        Toast.makeText(Login.this, "Please use a valid phone number", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressDialog.dismiss();
+
+                linearLayouts.get(1).setVisibility(View.GONE);
+                linearLayouts.get(0).setVisibility(View.VISIBLE);
+            }
+        });
+
+
+       /* ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
         Call<JSONObject> call = apiInterface.sendSMS(mobileNumber, message);
         call.enqueue(new Callback<JSONObject>() {
             @Override
@@ -232,7 +322,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
                 linearLayouts.get(0).setVisibility(View.VISIBLE);
                 Log.e("Error", ""+t.getMessage());
             }
-        });
+        });*/
 
     }
 
@@ -290,4 +380,77 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         finishAffinity();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestPermission();
+    }
+
+    private void requestPermission() {
+
+        Dexter.withActivity(Login.this)
+                .withPermissions(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.CAMERA)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+
+                        }
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // show alert dialog navigating to Settings
+                            showSettingsDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(Login.this, "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+    }
+
+    private void showSettingsDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Login.this);
+        builder.setTitle("Need Permissions");
+        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
+        builder.setPositiveButton("GOTO SETTINGS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                openSettings();
+            }
+
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
+
+    // navigating user to app settings
+    private void openSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
+    }
 }

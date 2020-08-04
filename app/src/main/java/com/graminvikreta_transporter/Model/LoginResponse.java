@@ -13,6 +13,10 @@ public class LoginResponse {
     @Expose
     private String message;
 
+    @SerializedName("id")
+    @Expose
+    private String userId;
+
 
 
     public String getStatus() {
@@ -29,5 +33,13 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

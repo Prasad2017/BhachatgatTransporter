@@ -20,6 +20,9 @@ public class Order {
     @SerializedName("product_bid_amount")
     @Expose
     private String productBidAmount;
+    @SerializedName("quantity")
+    @Expose
+    private String quantity;
     @SerializedName("bid_status")
     @Expose
     private String bidStatus;
@@ -32,6 +35,9 @@ public class Order {
     @SerializedName("billing_address")
     @Expose
     private String billingAddress;
+    @SerializedName("source_address")
+    @Expose
+    private String source_address;
 
 
     public String getMasterBidId() {
@@ -104,5 +110,21 @@ public class Order {
 
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getSource_address() {
+        return source_address;
+    }
+
+    public void setSource_address(String source_address) {
+        this.source_address = source_address;
     }
 }

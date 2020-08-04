@@ -48,8 +48,6 @@ public interface ApiInterface {
     @POST("/androidApp/Transporter/biddedOrder.php")
     Call<StatusResponse> biddedOrder(@Field("vendor_id") String deliveryBoyId, @Field("id") String orderId, @Field("bid_amount") String bid_amount);
 
-
-
     @GET("/androidApp/Transporter/RaisedOrder.php")
     Call<AllList> raisedOrderList(@Query("userId") String userId);
 

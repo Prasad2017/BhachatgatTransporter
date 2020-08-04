@@ -205,10 +205,10 @@ public class Home extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     if (jsonObject.getString("success").equalsIgnoreCase("1")){
                         Log.e("Location","Successfully Location");
-                        getBidOrderList();
+                      //  getBidOrderList();
                     }else if (jsonObject.getString("success").equalsIgnoreCase("0")){
                         Log.e("Location",""+jsonObject.getString("message"));
-                        getBidOrderList();
+                        //getBidOrderList();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -218,7 +218,7 @@ public class Home extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("Location","Server Error");
-                getBidOrderList();
+               // getBidOrderList();
             }
         });
 
@@ -231,8 +231,10 @@ public class Home extends Fragment {
         ((MainPage) getActivity()).lockUnlockDrawer(DrawerLayout.LOCK_MODE_UNLOCKED);
         MainPage.drawerLayout.closeDrawers();
         if (DetectConnection.checkInternetConnection(getActivity())){
+            requestPermission();
             if (MainPage.userId.equalsIgnoreCase("")) {
                 startActivity(new Intent(getActivity(), Login.class));
+                getActivity().finishAffinity();
             }else {
                 getOrderRaised();
                 getBidOrderList();

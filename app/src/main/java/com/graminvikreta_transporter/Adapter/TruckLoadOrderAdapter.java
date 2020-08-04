@@ -33,7 +33,7 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
 
     public static List<Order> itemsList;
     Context context;
-    public static String orderId, orderNumber, date, fullName, mobilNumber, totalAmount,billingAddress, productName;
+    public static String orderId, orderNumber, date, fullName, mobilNumber, totalAmount,billingAddress, productName, source_address, quantity;
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
     public static String DeleteOrderURL="http://graminvikreta.com/androidApp/Transporter//Delete_Order.php";
@@ -57,7 +57,7 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
         holder.txtorder_id.setText(itemsList.get(position).getOrderNumber());
         holder.txtamount.setText(MainPage.currency+" 0");
         holder.pickupadd1.setText(itemsList.get(position).getBillingAddress() );
-        holder.deliveryadd1.setText(itemsList.get(position).getBillingAddress() );
+        holder.deliveryadd1.setText(itemsList.get(position).getSource_address() );
         holder.date2.setText(itemsList.get(position).getDate() );
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +71,8 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
                 fullName = itemsList.get(position).getFullName();
                 mobilNumber = itemsList.get(position).getMobileno();
                 billingAddress = itemsList.get(position).getBillingAddress();
+                source_address = itemsList.get(position).getSource_address();
+                quantity = itemsList.get(position).getQuantity();
                 productName = itemsList.get(position).getProduct_name();
 
 

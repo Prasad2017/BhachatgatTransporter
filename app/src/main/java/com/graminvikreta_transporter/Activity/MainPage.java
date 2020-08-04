@@ -38,7 +38,7 @@ public class MainPage extends AppCompatActivity {
 
     public static ImageView menu, back;
     public static DrawerLayout drawerLayout;
-    public static TextView title, cartCount;
+    public static TextView title;
     public static LinearLayout toolbarContainer;
     public static String userId, email, name, contact, address, image, pancardNumber, gstNumber, currency = "₹";
     boolean doubleBackToExitPressedOnce = false;
