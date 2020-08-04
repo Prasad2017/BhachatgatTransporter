@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.graminvikreta_transporter.Extra.Common;
 import com.graminvikreta_transporter.Fragment.AwardOrders;
 import com.graminvikreta_transporter.Fragment.Home;
+import com.graminvikreta_transporter.Fragment.OrderHistory;
 import com.graminvikreta_transporter.Fragment.Profile;
 import com.graminvikreta_transporter.R;
 import com.google.android.material.navigation.NavigationView;
@@ -70,7 +71,7 @@ public class MainPage extends AppCompatActivity {
                         break;
 
                     case R.id.order_history:
-                     //   loadFragment(new OrderHistory(), true);
+                        loadFragment(new OrderHistory(), true);
                         break;
 
                     case R.id.award:

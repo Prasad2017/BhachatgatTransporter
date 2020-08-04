@@ -314,8 +314,8 @@ public class Profile extends Fragment {
                             editTexts.get(1).setText(jsonObject.getString("last_name"));
                             editTexts.get(2).setText(jsonObject.getString("email"));
                             editTexts.get(3).setText(jsonObject.getString("contact"));
-                            editTexts.get(4).setText(jsonObject.getString("pancard_number"));
-                            editTexts.get(5).setText(jsonObject.getString("gst_number"));
+                            editTexts.get(4).setText(jsonObject.getString("pancard_number")!=null?"":jsonObject.getString("pancard_number"));
+                            editTexts.get(5).setText(jsonObject.getString("gst_number")!=null?"":jsonObject.getString("gst_number"));
                             editTexts.get(6).setText(jsonObject.getString("address"));
 
                             editTexts.get(0).setSelection(editTexts.get(0).getText().toString().length());

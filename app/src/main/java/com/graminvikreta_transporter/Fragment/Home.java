@@ -130,9 +130,9 @@ public class Home extends Fragment {
             @Override
             public void onRefresh() {
                 if (DetectConnection.checkInternetConnection(getActivity())) {
-                      getOrderRaised();
-                       getProfile();
-                       getBidOrderList();
+                    getOrderRaised();
+                    getProfile();
+                    getBidOrderList();
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
                     Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
@@ -173,7 +173,7 @@ public class Home extends Fragment {
                             MainPage.pancardNumber = jsonObject.getString("pancard_number");
                             MainPage.gstNumber = jsonObject.getString("gst_number");
 
-                           // getLocation();
+                            // getLocation();
                         }
                     }
                 } catch (JSONException e) {
@@ -184,7 +184,7 @@ public class Home extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 //TastyToast.makeText(getActivity(),"Server Error", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
-               // getLocation();
+                // getLocation();
             }
         });
 
@@ -205,7 +205,7 @@ public class Home extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     if (jsonObject.getString("success").equalsIgnoreCase("1")){
                         Log.e("Location","Successfully Location");
-                      //  getBidOrderList();
+                        //  getBidOrderList();
                     }else if (jsonObject.getString("success").equalsIgnoreCase("0")){
                         Log.e("Location",""+jsonObject.getString("message"));
                         //getBidOrderList();
@@ -218,7 +218,7 @@ public class Home extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("Location","Server Error");
-               // getBidOrderList();
+                // getBidOrderList();
             }
         });
 
@@ -272,49 +272,47 @@ public class Home extends Fragment {
 
     private void getBidOrderList() {
 
-       try{
+        try{
 
-           ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-           Call<BidData> call = apiInterface.getBidding(MainPage.userId);
-           call.enqueue(new Callback<BidData>() {
-               @Override
-               public void onResponse(Call<BidData> call, Response<BidData> response) {
+            ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+            Call<BidData> call = apiInterface.getBidding(MainPage.userId);
+            call.enqueue(new Callback<BidData>() {
+                @Override
+                public void onResponse(Call<BidData> call, Response<BidData> response) {
 
-                   if (response.body().getSuccess().equalsIgnoreCase("true")) {
-                       try {
+                    if (response.body().getSuccess().equalsIgnoreCase("true")) {
+                        try {
 
-                           mybiddingResponse = response.body();
-                           if (mybiddingResponse!=null) {
-                               LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                               linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                               acceptsimpleListView.setLayoutManager(linearLayoutManager);
-                               myOrdersAdapter = new MyOrdersAdapter(getActivity(), mybiddingResponse.getOrderdata());
-                               acceptsimpleListView.setAdapter(myOrdersAdapter);
-                               myOrdersAdapter.notifyDataSetChanged();
-                               acceptsimpleListView.setHasFixedSize(true);
-                               cardViews.get(1).setVisibility(View.VISIBLE);
-                           } else {
-                               cardViews.get(1).setVisibility(View.GONE);
-                           }
+                            mybiddingResponse = response.body();
 
-                       } catch (Exception e) {
-                           cardViews.get(1).setVisibility(View.GONE);
-                       }
-                   }else {
-                       cardViews.get(1).setVisibility(View.GONE);
-                   }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            acceptsimpleListView.setLayoutManager(linearLayoutManager);
+                            myOrdersAdapter = new MyOrdersAdapter(getActivity(), mybiddingResponse.getOrderdata());
+                            acceptsimpleListView.setAdapter(myOrdersAdapter);
+                            myOrdersAdapter.notifyDataSetChanged();
+                            acceptsimpleListView.setHasFixedSize(true);
+                            cardViews.get(1).setVisibility(View.VISIBLE);
 
-               }
 
-               @Override
-               public void onFailure(Call<BidData> call, Throwable t) {
-                   cardViews.get(1).setVisibility(View.GONE);
-               }
-           });
+                        } catch (Exception e) {
+                            cardViews.get(1).setVisibility(View.GONE);
+                        }
+                    }else {
+                        cardViews.get(1).setVisibility(View.GONE);
+                    }
 
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+                }
+
+                @Override
+                public void onFailure(Call<BidData> call, Throwable t) {
+                    cardViews.get(1).setVisibility(View.GONE);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
