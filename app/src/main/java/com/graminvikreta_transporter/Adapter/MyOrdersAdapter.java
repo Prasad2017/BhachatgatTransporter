@@ -146,7 +146,11 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrderholder> {
 
     @Override
     public int getItemCount() {
-        return results.size();
+        if (results!=null) {
+            return results.size();
+        } else {
+            return 0;
+        }
     }
 
     public void UpdateVendorBid(String order_id, String bid_amt) {

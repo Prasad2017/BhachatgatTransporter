@@ -52,12 +52,24 @@ public interface ApiInterface {
     Call<AllList> raisedOrderList(@Query("userId") String userId);
 
     @FormUrlEncoded
-    @POST("/Qsar/DeliveryBoy/OrderBidding.php")
-    Call<BidData> getBidding(@Query("userId") String userId);
+    @POST("/androidApp/Transporter/OrderBidding.php")
+    Call<BidData> getBidding(@Field("vendorId") String userId);
 
 
     @FormUrlEncoded
-    @POST("UpdateVendorBid.php")
+    @POST("/androidApp/Transporter/UpdateVendorBid.php")
     Call<StatusResponse> UpdateVendorBid(@Field("order_id") String order_id, @Field("vendor_id") String vendor_id, @Field("bid_amount") String bid_amount);
+
+
+    @GET("/androidApp/Transporter/GetAwardOrders.php")
+    Call<AllList> GetAwardOrders(@Query("delivery_boy_id") String userId);
+
+
+    @FormUrlEncoded
+    @POST("/androidApp/Transporter/Confirm_PickUp.php")
+    Call<StatusResponse> getConfirmPickUp(@Field("delivery_boy_id") String delivery_boy_id,
+                                  @Field("id") String order_id,
+                                  @Field("order_status") String order_status);
+
 
 }

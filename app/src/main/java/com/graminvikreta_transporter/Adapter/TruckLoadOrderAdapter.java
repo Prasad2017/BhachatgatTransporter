@@ -36,7 +36,7 @@ public class TruckLoadOrderAdapter extends RecyclerView.Adapter<TruckLoadOrderAd
     public static String orderId, orderNumber, date, fullName, mobilNumber, totalAmount,billingAddress, productName, source_address, quantity;
 
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    public static String DeleteOrderURL="http://graminvikreta.com/androidApp/Transporter//Delete_Order.php";
+    public static String DeleteOrderURL="http://graminvikreta.com/androidApp/Transporter/Delete_Order.php";
 
 
     public TruckLoadOrderAdapter(List<Order> itemsList, Context context) {

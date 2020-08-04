@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/simpleSwipeRefreshLayout"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:text="Order Id : "
+                    android:layout_weight="2"
+                    android:textSize="16sp"
+                    android:paddingRight="5dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColorHint="@color/light_black"/>
+
+                <TextView
+                    android:id="@+id/ordertitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint=""
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserratmedium"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:textSize="16sp"
+                    android:imeOptions="actionNext"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:text="CUSTOMER NAME : "
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingRight="5dp"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColorHint="@color/light_black"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint=""
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:textSize="16sp"
+                    android:imeOptions="actionNext"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:text="MOBILE NUMBER : "
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:paddingRight="5dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColorHint="@color/light_black"/>
+
+                <TextView
+                    android:id="@+id/contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint=""
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    android:digits="0123456789"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:imeOptions="actionNext"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:text="Customer Address : "
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:paddingRight="5dp"
+                    android:textColorHint="@color/light_black"/>
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint="Pune"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserratmedium"
+                    android:hint="PICK UP LOCATION" />
+
+                <TextView
+                    android:imeOptions="actionNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:hint="DELIVERY LOCATION"
+                    android:layout_marginLeft="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/pickuplocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint=""
+                    android:padding="3dp"
+                    android:gravity="center|left|top"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:inputType="textMultiLine"
+                    android:textStyle="bold"
+                    android:imeOptions="actionNext"/>
+
+                <TextView
+                    android:id="@+id/deliverylocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/editextborder"
+                    android:hint=""
+                    android:padding="3dp"
+                    android:inputType="textMultiLine"
+                    android:gravity="center|left|top"
+                    android:layout_gravity="center"
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:singleLine="true"
+                    android:visibility="visible"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/destinationspin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:gravity="center|left"
+                    android:text="Product Name"
+                    android:textAllCaps="true"/>
+
+                <TextView
+                    android:id="@+id/productName"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/editextborder"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:imeOptions="actionNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:text="Product Quantity"
+                    android:textAllCaps="true"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/editextborder"
+                    android:layout_margin="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:fontFamily="@font/montserratmedium"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
+
+            <com.agik.AGIKSwipeButton.View.Swipe_Button_View
+                android:id="@+id/swipeButtonView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:sb_swipe_text="Confirm To PickUp"
+                app:sb_swipe_both_direction="true"
+                app:sb_swipe_animate_text="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="40dp" />
+
+            <com.agik.AGIKSwipeButton.View.Swipe_Button_View
+                android:id="@+id/swipeButtonView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:sb_swipe_text="Confirm To Deliver"
+                app:sb_swipe_both_direction="true"
+                app:sb_swipe_animate_text="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="40dp"/>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

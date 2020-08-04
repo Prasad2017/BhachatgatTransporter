@@ -146,5 +146,6 @@ dependencies {
         exclude module: 'support-v4'
     }
 
+    implementation 'com.github.gratusik:AGIKSwipeButton:1.0.1'
 
 }

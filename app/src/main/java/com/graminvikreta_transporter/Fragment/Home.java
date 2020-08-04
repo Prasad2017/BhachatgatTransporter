@@ -284,14 +284,19 @@ public class Home extends Fragment {
                        try {
 
                            mybiddingResponse = response.body();
-                           LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                           linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                           acceptsimpleListView.setLayoutManager(linearLayoutManager);
-                           myOrdersAdapter = new MyOrdersAdapter(getActivity(), mybiddingResponse.getOrderdata());
-                           acceptsimpleListView.setAdapter(myOrdersAdapter);
-                           myOrdersAdapter.notifyDataSetChanged();
-                           acceptsimpleListView.setHasFixedSize(true);
-                           cardViews.get(1).setVisibility(View.VISIBLE);
+                           if (mybiddingResponse!=null) {
+                               LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                               linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                               acceptsimpleListView.setLayoutManager(linearLayoutManager);
+                               myOrdersAdapter = new MyOrdersAdapter(getActivity(), mybiddingResponse.getOrderdata());
+                               acceptsimpleListView.setAdapter(myOrdersAdapter);
+                               myOrdersAdapter.notifyDataSetChanged();
+                               acceptsimpleListView.setHasFixedSize(true);
+                               cardViews.get(1).setVisibility(View.VISIBLE);
+                           } else {
+                               cardViews.get(1).setVisibility(View.GONE);
+                           }
+
                        } catch (Exception e) {
                            cardViews.get(1).setVisibility(View.GONE);
                        }

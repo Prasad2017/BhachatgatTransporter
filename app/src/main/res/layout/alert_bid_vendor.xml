@@ -45,7 +45,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
@@ -55,37 +55,34 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_toRightOf="@+id/v"
-                android:layout_below="@+id/bid_edit"
                 android:id="@+id/submit"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/yes"
+                android:backgroundTint="@color/main_green_color"
                 android:fontFamily="@font/montserratmedium"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:text="Submit"/>
-            <View
-                android:layout_centerHorizontal="true"
-                android:id="@+id/v"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"/>
+
 
             <Button
-                android:layout_toLeftOf="@+id/v"
-                android:layout_below="@+id/bid_edit"
                 android:id="@+id/cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/no"
                 android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textAllCaps="false"
+                android:layout_weight="1"
                 android:fontFamily="@font/montserratmedium"
                 android:text="Close"/>
 

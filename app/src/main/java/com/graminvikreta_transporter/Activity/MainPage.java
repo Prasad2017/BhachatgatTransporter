@@ -23,7 +23,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.graminvikreta_transporter.Extra.Common;
+import com.graminvikreta_transporter.Fragment.AwardOrders;
 import com.graminvikreta_transporter.Fragment.Home;
+import com.graminvikreta_transporter.Fragment.Profile;
 import com.graminvikreta_transporter.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -63,8 +65,20 @@ public class MainPage extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.home:
-                        loadFragment(new Home(), false);
+                    case R.id.profile:
+                        loadFragment(new Profile(), true);
+                        break;
+
+                    case R.id.order_history:
+                     //   loadFragment(new OrderHistory(), true);
+                        break;
+
+                    case R.id.award:
+                        loadFragment(new AwardOrders(), true);
+                        break;
+
+                    case R.id.logout:
+                        logout();
                         break;
 
 
@@ -179,7 +193,7 @@ public class MainPage extends AppCompatActivity {
 
                 dialog.dismiss();
                 Common.saveUserData(MainPage.this, "userId", "");
-                File file1 = new File("data/data/com.mlmecommerce/shared_prefs/user.xml");
+                File file1 = new File("data/data/com.graminvikreta_transporter/shared_prefs/user.xml");
                 if (file1.exists()) {
                     file1.delete();
                 }

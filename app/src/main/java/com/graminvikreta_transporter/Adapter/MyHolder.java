@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
+
 class MyHolder extends RecyclerView.ViewHolder {
 
     @BindViews({R.id.name, R.id.amount})

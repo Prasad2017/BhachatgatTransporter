@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/home"
-        android:title="Home" />
+    <group
+        android:id="@+id/first">
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/name"
+            android:title="Profile" />
+
+    </group>
+
+
+    <group
+        android:id="@+id/second">
+        <item
+            android:id="@+id/order_history"
+            android:icon="@drawable/bill"
+            android:title="Bidding Order" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/third">
+        <item
+            android:id="@+id/award"
+            android:icon="@drawable/award"
+            android:title="Awarded Order" />
+
+    </group>
+
+    <group
+        android:id="@+id/forth">
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+
+    </group>
 
 </menu>
