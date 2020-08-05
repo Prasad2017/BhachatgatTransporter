@@ -163,6 +163,7 @@ public class Registration extends AppCompatActivity {
                         && formEditTexts.get(5).testValidity() && formEditTexts.get(6).testValidity() && formEditTexts.get(7).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()) {
 
                     matcher = pattern.matcher(formEditTexts.get(5).getText().toString());
+
                     if (matcher.matches()) {
                         String imageString = "";
 
