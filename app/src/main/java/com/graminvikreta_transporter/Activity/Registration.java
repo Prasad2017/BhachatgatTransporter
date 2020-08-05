@@ -15,7 +15,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,8 +44,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import org.apache.poi.ss.formula.functions.T;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -63,7 +70,8 @@ public class Registration extends AppCompatActivity {
     LinearLayout loginLinearLayout;
     private ChoosePhotoHelper choosePhotoHelper;
     Bitmap bitmap;
-
+    Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
+    Matcher matcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +90,6 @@ public class Registration extends AppCompatActivity {
         formEditTexts.get(0).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(1).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(3).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        formEditTexts.get(5).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(6).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(7).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(8).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -90,7 +97,8 @@ public class Registration extends AppCompatActivity {
         formEditTexts.get(10).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(11).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(12).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        formEditTexts.get(13).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        formEditTexts.get(13).setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        formEditTexts.get(5).setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
         choosePhotoHelper = ChoosePhotoHelper.with(this)
                 .asFilePath()
@@ -103,6 +111,36 @@ public class Registration extends AppCompatActivity {
                                 .into(imageView);
                     }
                 });
+
+        formEditTexts.get(2).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+
+                    if (formEditTexts.get(2).testValidity()){
+                        if (formEditTexts.get(2).getText().toString().length()==10){
+
+                        } else {
+                            formEditTexts.get(2).setError("Enter valid mobile number");
+                            formEditTexts.get(2).requestFocus();
+                        }
+                    }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -122,21 +160,23 @@ public class Registration extends AppCompatActivity {
                 if (formEditTexts.get(0).testValidity() && formEditTexts.get(1).testValidity() && formEditTexts.get(2).testValidity() && formEditTexts.get(3).testValidity() && formEditTexts.get(4).testValidity()
                 && formEditTexts.get(5).testValidity() && formEditTexts.get(6).testValidity() && formEditTexts.get(7).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()
                 && formEditTexts.get(11).testValidity() && formEditTexts.get(12).testValidity() && formEditTexts.get(13).testValidity()) {
+                    matcher = pattern.matcher(formEditTexts.get(5).getText().toString());
+                    if (matcher.matches()) {
+                        String imageString = "";
 
-                    String imageString = "";
+                        if (imageView.getDrawable() != null) {
+                            bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            imageString = getStringImage(bitmap);
+                        } else {
+                            imageString = "";
+                        }
 
-                    if (imageView.getDrawable()!=null){
-                        bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                        imageString = getStringImage(bitmap);
-                    } else {
-                        imageString = "";
+                        registration(imageString, formEditTexts.get(0).getText().toString(), formEditTexts.get(1).getText().toString(), formEditTexts.get(2).getText().toString(), formEditTexts.get(3).getText().toString(),
+                                formEditTexts.get(4).getText().toString(), formEditTexts.get(5).getText().toString(), formEditTexts.get(6).getText().toString(), formEditTexts.get(7).getText().toString(),
+                                formEditTexts.get(8).getText().toString(), formEditTexts.get(9).getText().toString(), formEditTexts.get(10).getText().toString(), formEditTexts.get(11).getText().toString(),
+                                formEditTexts.get(12).getText().toString(), formEditTexts.get(13).getText().toString());
+
                     }
-
-                    registration(imageString, formEditTexts.get(0).getText().toString(), formEditTexts.get(1).getText().toString(), formEditTexts.get(2).getText().toString(), formEditTexts.get(3).getText().toString(),
-                            formEditTexts.get(4).getText().toString(), formEditTexts.get(5).getText().toString(), formEditTexts.get(6).getText().toString(), formEditTexts.get(7).getText().toString(),
-                            formEditTexts.get(8).getText().toString(), formEditTexts.get(9).getText().toString(), formEditTexts.get(10).getText().toString(), formEditTexts.get(11).getText().toString(),
-                            formEditTexts.get(12).getText().toString(), formEditTexts.get(13).getText().toString());
-
                 }
 
                 break;

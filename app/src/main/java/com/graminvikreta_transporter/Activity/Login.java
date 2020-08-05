@@ -74,7 +74,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        OtpReceivedInterface, GoogleApiClient.OnConnectionFailedListener {
+    OtpReceivedInterface, GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.mobileNumber)
     FormEditText formEditText;
@@ -231,7 +231,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
 
         HASH_KEY = (String) new AppSignatureHelper(this).getAppSignatures().get(0);
         HASH_KEY = HASH_KEY.replace("+", "%252B");
-        OTP= new DecimalFormat("0000").format(new Random().nextInt(9999));
+        OTP = new DecimalFormat("0000").format(new Random().nextInt(9999));
         String message = "<#> Your Gramin Vikreta verification OTP code is "+ OTP +". Please DO NOT share this OTP with anyone.\n" + HASH_KEY;
         String encoded_message= URLEncoder.encode(message);
         Log.e("Message", ""+encoded_message);
@@ -285,45 +285,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         });
 
 
-       /* ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<JSONObject> call = apiInterface.sendSMS(mobileNumber, message);
-        call.enqueue(new Callback<JSONObject>() {
-            @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
-                try {
-                    if (response.body().getString("success").equals("1"))
-                    {
-                        progressDialog.dismiss();
-
-                        linearLayouts.get(0).setVisibility(View.GONE);
-                        linearLayouts.get(1).setVisibility(View.VISIBLE);
-                        Toast.makeText(Login.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
-                        startSMSListener();
-
-                    } else  {
-                        progressDialog.dismiss();
-
-                        linearLayouts.get(1).setVisibility(View.GONE);
-                        linearLayouts.get(0).setVisibility(View.VISIBLE);
-                        Toast.makeText(Login.this, "Please use a valid phone number", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
-                progressDialog.dismiss();
-
-                linearLayouts.get(1).setVisibility(View.GONE);
-                linearLayouts.get(0).setVisibility(View.VISIBLE);
-                Log.e("Error", ""+t.getMessage());
-            }
-        });*/
-
     }
 
     public void startSMSListener() {
@@ -360,7 +321,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
 
     @Override
     public void onOtpReceived(String otp) {
-        Toast.makeText(this, "Otp Received " + otp, Toast.LENGTH_LONG).show();
+      //  Toast.makeText(this, "Otp Received " + otp, Toast.LENGTH_LONG).show();
         otpView.setText(otp);
     }
 

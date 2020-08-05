@@ -19,14 +19,13 @@
         android:gravity="center"
         android:padding="20dp">
 
-        <com.github.siyamed.shapeimageview.RoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/logo"
-            app:siRadius="5dp" />
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:id="@+id/sendotpLayout"
