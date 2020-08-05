@@ -26,6 +26,7 @@ public interface ApiInterface {
     Call<LoginResponse> Registration(@Field("profilePhoto") String profilePhoto,
                                      @Field("firstName") String firstName,
                                      @Field("lastName") String lastName,
+                                     @Field("middleName") String middleName,
                                      @Field("mobileNumber")  String mobileNumber,
                                      @Field("address") String address,
                                      @Field("aadharCard")  String aadharCard,
