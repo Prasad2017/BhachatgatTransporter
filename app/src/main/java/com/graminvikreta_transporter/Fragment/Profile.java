@@ -50,27 +50,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import cz.msebera.android.httpclient.Header;
 import es.dmoral.toasty.Toasty;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class Profile extends Fragment {
@@ -82,9 +71,9 @@ public class Profile extends Fragment {
     public String getProfile = "http://graminvikreta.com/androidApp/Transporter/getProfile.php";
     public String UpdateProfileURl = "http://graminvikreta.com/androidApp/Transporter/UpdateProfile.php";
 
-    Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
-    Pattern trucknumberpattern = Pattern.compile("[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}");
-    Pattern gstpattern = Pattern.compile("[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}");
+    Pattern panCardPattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
+    Pattern vehicleNumberPattern = Pattern.compile("[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}");
+    Pattern gstPattern = Pattern.compile("[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}");
     Matcher matcher;
 
 
@@ -129,7 +118,7 @@ public class Profile extends Fragment {
 
                         if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
                                 && validate(editTexts.get(6))) {
-                            matcher = pattern.matcher(editTexts.get(4).getText().toString());
+                            matcher = panCardPattern.matcher(editTexts.get(4).getText().toString());
                             if (matcher.matches()) {
                                 Update();
                             } else {
@@ -138,24 +127,6 @@ public class Profile extends Fragment {
                             }
                         }
 
-                    } else {
-
-                        if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
-                                && validate(editTexts.get(5)) && validate(editTexts.get(6))) {
-                            matcher = pattern.matcher(editTexts.get(4).getText().toString());
-                            if (matcher.matches()) {
-                                matcher = gstpattern.matcher(editTexts.get(5).getText().toString());
-                                if (matcher.matches()) {
-                                    Update();
-                                } else {
-                                    editTexts.get(5).requestFocus();
-                                    editTexts.get(5).setError("Invalid GST Number");
-                                }
-                            } else {
-                                editTexts.get(4).requestFocus();
-                                editTexts.get(4).setError("Invalid PAN Number");
-                            }
-                        }
                     }
 
                 } else {

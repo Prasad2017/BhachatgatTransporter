@@ -160,8 +160,7 @@ public class Registration extends AppCompatActivity {
             case R.id.signIn:
 
                 if (formEditTexts.get(0).testValidity() && formEditTexts.get(1).testValidity() && formEditTexts.get(2).testValidity() && formEditTexts.get(3).testValidity() && formEditTexts.get(4).testValidity()
-                        && formEditTexts.get(5).testValidity() && formEditTexts.get(6).testValidity() && formEditTexts.get(7).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()
-                        && formEditTexts.get(14).testValidity()) {
+                        && formEditTexts.get(5).testValidity() && formEditTexts.get(6).testValidity() && formEditTexts.get(7).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()) {
 
                     matcher = pattern.matcher(formEditTexts.get(5).getText().toString());
                     if (matcher.matches()) {
@@ -179,6 +178,9 @@ public class Registration extends AppCompatActivity {
                                 formEditTexts.get(8).getText().toString(), formEditTexts.get(9).getText().toString(), formEditTexts.get(10).getText().toString(), formEditTexts.get(11).getText().toString(),
                                 formEditTexts.get(12).getText().toString(), formEditTexts.get(13).getText().toString(), formEditTexts.get(14).getText().toString());
 
+                    } else {
+                        formEditTexts.get(5).setError("Enter valid pan number");
+                        formEditTexts.get(5).requestFocus();
                     }
                 }
 
