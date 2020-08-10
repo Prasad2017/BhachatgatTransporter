@@ -35,11 +35,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.graminvikreta_transporter.Activity.MainPage;
+import com.graminvikreta_transporter.Adapter.TruckDetailsAdapter;
 import com.graminvikreta_transporter.Extra.Config;
 import com.graminvikreta_transporter.Extra.DetectConnection;
+import com.graminvikreta_transporter.Model.TruckDetails;
 import com.graminvikreta_transporter.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -50,16 +53,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 import es.dmoral.toasty.Toasty;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class Profile extends Fragment {
@@ -67,14 +78,34 @@ public class Profile extends Fragment {
     View view;
     @BindViews({R.id.fname, R.id.lname, R.id.email, R.id.mobile, R.id.pancard, R.id.gstnumber, R.id.address})
     List<EditText> editTexts;
+    @BindViews({R.id.detailsLinear, R.id.truckLinear})
+    List<LinearLayout> linearLayouts;
+    @BindViews({R.id.basic, R.id.truck})
+    List<TextView> textViews;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    List<TruckDetails> truckDetailsList = new ArrayList<>();
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-    public String getProfile = "http://graminvikreta.com/androidApp/Transporter/getProfile.php";
-    public String UpdateProfileURl = "http://graminvikreta.com/androidApp/Transporter/UpdateProfile.php";
+    TruckDetailsAdapter adapter;
+    public static String VendorTruckDetailsURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/VendorTruckDetails.php";
+    public static String VendorTruckListURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/VendorTruckList.php";
+    public String getProfile = "http://softmate.in/androidApp/Qsar/DeliveryBoy/GetProfile.php";
+    public String UpdateProfileURl = "http://softmate.in/androidApp/Qsar/DeliveryBoy/UpdateProfile.php";
+    public static final String msgsend="http://softmate.in/androidApp/Lift/sms_langSuposrt.php";
+    public static String TruckURL="http://softmate.in/androidApp/Qsar/getTruck.php";
+    public static String TruckCapacityURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/getCapacity.php";
+    public static String MaterialURL="http://softmate.in/androidApp/Qsar/Materialtype.php";
 
-    Pattern panCardPattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
-    Pattern vehicleNumberPattern = Pattern.compile("[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}");
-    Pattern gstPattern = Pattern.compile("[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}");
+    Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
+    Pattern trucknumberpattern = Pattern.compile("[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}");
+    Pattern gstpattern = Pattern.compile("[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}");
+    String convert, code, OTP, TruckTypeValue, TruckCapacityValue;
     Matcher matcher;
+    ImageView truckimageView;
+    protected ArrayList<String> selectedMaterial = new ArrayList<String>();
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    public Bitmap bitmap;
+    private String userChoosenTask, imageString, trucknumber;
 
 
 
@@ -106,19 +137,279 @@ public class Profile extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.update})
+    /*@OnClick({R.id.basic, R.id.truck, R.id.addtruck, R.id.update, R.id.materialtype})
     public void onClick(View view) {
         switch (view.getId()) {
 
+            case R.id.materialtype:
+                showSelectMaterialDialog();
+                break;
+
+
+            case R.id.basic:
+
+                textViews.get(0).setBackground(getActivity().getResources().getDrawable(R.drawable.carborder));
+                textViews.get(1).setBackground(getActivity().getResources().getDrawable(R.drawable.bikeborder));
+                textViews.get(0).setTextColor(getActivity().getResources().getColor(R.color.white));
+                textViews.get(1).setTextColor(getActivity().getResources().getColor(R.color.black));
+                recyclerView.setVisibility(View.GONE);
+                linearLayouts.get(1).setVisibility(View.GONE);
+                linearLayouts.get(0).setVisibility(View.VISIBLE);
+
+                break;
+
+            case R.id.truck:
+
+                textViews.get(0).setBackground(getActivity().getResources().getDrawable(R.drawable.reversecarborder));
+                textViews.get(1).setBackground(getActivity().getResources().getDrawable(R.drawable.reversebikeborder));
+                textViews.get(0).setTextColor(getActivity().getResources().getColor(R.color.black));
+                textViews.get(1).setTextColor(getActivity().getResources().getColor(R.color.white));
+                getTruckDetails();
+                recyclerView.setVisibility(View.VISIBLE);
+                linearLayouts.get(0).setVisibility(View.GONE);
+                linearLayouts.get(1).setVisibility(View.VISIBLE);
+
+                break;
+
+            case R.id.addtruck:
+
+                final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View viewf = layoutInflater.inflate(R.layout.truck_details_vendor, null);
+                dialogBuilder.setCancelable(false);
+                final EditText edttrucknumber = (EditText) viewf.findViewById(R.id.trucknumber);
+                final EditText edttruckweight = (EditText) viewf.findViewById(R.id.truckweight);
+                final EditText edttruckheight = (EditText) viewf.findViewById(R.id.truckheight);
+                final EditText edttrucklength = (EditText) viewf.findViewById(R.id.trucklength);
+                //  final EditText edttruckcapacity = (EditText) viewf.findViewById(R.id.truckcapacity);
+                final EditText edttrucktyres = (EditText) viewf.findViewById(R.id.trucktyres);
+                final ImageView btn_close = (ImageView) viewf.findViewById(R.id.btn_close);
+                Spinner trucktypespin = (Spinner) viewf.findViewById(R.id.trucktypespin);
+                Spinner truckcapacityspin = (Spinner) viewf.findViewById(R.id.truckcapacityspin);
+                truckimageView = (ImageView) viewf.findViewById(R.id.imageView);
+                final TextView save = (TextView) viewf.findViewById(R.id.save);
+
+                //Select Truck Name
+                requestQueue= Volley.newRequestQueue(getActivity());
+                objectRequest=new JsonObjectRequest(Request.Method.GET, TruckURL, null, new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray=response.getJSONArray("success");
+
+                            if (jsonArray.length()==0){
+
+                            }else {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                                    Truck material = new Truck();
+                                    material.setType_id(jsonObject.getString("truck_id"));
+                                    material.setType_name(jsonObject.getString("truck_type"));
+                                    truckList.add(material);
+
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                requestQueue.add(objectRequest);
+
+                final ArrayAdapter ctype = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, truckList);
+                ctype.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+                trucktypespin.setAdapter(ctype);
+
+
+                //Select Truck Capacity
+                requestQueue= Volley.newRequestQueue(getActivity());
+                objectRequest=new JsonObjectRequest(Request.Method.GET, TruckCapacityURL, null, new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray=response.getJSONArray("success");
+
+                            if (jsonArray.length()==0){
+
+                            }else {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                                    Truck material = new Truck();
+                                    material.setType_id(jsonObject.getString("capacity_id"));
+                                    material.setType_name(jsonObject.getString("capacity_value"));
+                                    trucktonList.add(material);
+
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                requestQueue.add(objectRequest);
+
+                final ArrayAdapter tontype = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, trucktonList);
+                tontype.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+                truckcapacityspin.setAdapter(tontype);
+
+                try{
+
+                    edttrucknumber.setSelection(edttrucknumber.getText().toString().length());
+                    edttruckweight.setSelection(edttruckweight.getText().toString().length());
+                    edttruckheight.setSelection(edttruckheight.getText().toString().length());
+                    edttrucklength.setSelection(edttrucklength.getText().toString().length());
+                    // edttruckcapacity.setSelection(edttruckcapacity.getText().toString().length());
+                    edttrucktyres.setSelection(edttrucktyres.getText().toString().length());
+
+                    edttrucknumber.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                trucktypespin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                        TruckTypeValue = String.valueOf(adapterView.getItemAtPosition(position));
+                        Log.e("TruckTypeValue", ""+TruckTypeValue);
+                        Toasty.normal(getActivity(), "TruckTypeValue"+TruckTypeValue, Toasty.LENGTH_SHORT).show();
+                        try {
+                            ((TextView) adapterView.getChildAt(0)).setTextColor(getActivity().getResources().getColor(R.color.black));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                truckcapacityspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                        TruckCapacityValue = String.valueOf(adapterView.getItemAtPosition(position));
+                        Toasty.normal(getActivity(), "TruckCapacityValue"+TruckCapacityValue, Toasty.LENGTH_SHORT).show();
+                        try {
+                            ((TextView) adapterView.getChildAt(0)).setTextColor(getActivity().getResources().getColor(R.color.black));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                btn_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+
+                truckimageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showPictureDialog();
+                    }
+                });
+
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (truckimageView.getDrawable() == null) {
+                            Toasty.normal(getActivity(), "Please Select RC Book Image", Toasty.LENGTH_SHORT).show();
+                        } else {
+                            if (TruckTypeValue!=null) {
+                                if (validate(edttrucknumber) && validate(edttrucktyres)) {
+                                    matcher = trucknumberpattern.matcher(edttrucknumber.getText().toString().trim());
+                                    if (matcher.matches()) {
+
+
+                                        imageString = getStringImage(bitmap);
+
+
+                                        RequestParams requestParams = new RequestParams();
+                                        requestParams.put("trucknumber", edttrucknumber.getText().toString());
+                                        requestParams.put("truckcapacity", TruckCapacityValue);
+                                        requestParams.put("trucktyres", edttrucktyres.getText().toString());
+                                        requestParams.put("truckimage", imageString);
+                                        requestParams.put("trucktype", TruckTypeValue);
+                                        requestParams.put("userId", MainPage.userId);
+
+                                        asyncHttpClient.post(VendorTruckDetailsURL, requestParams, new AsyncHttpResponseHandler() {
+                                            @Override
+                                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                String s = new String(responseBody);
+                                                try {
+                                                    JSONObject jsonObject = new JSONObject(s);
+                                                    if (jsonObject.getString("success").equalsIgnoreCase("1")) {
+
+                                                        dialogBuilder.dismiss();
+                                                        getTruckDetails();
+                                                    } else if (jsonObject.getString("success").equalsIgnoreCase("0")) {
+                                                        dialogBuilder.dismiss();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                              dialogBuilder.dismiss();
+                                            }
+                                        });
+                                    } else {
+                                        edttrucknumber.requestFocus();
+                                        edttrucknumber.setError("Invalid Truck Number");
+                                    }
+                                }
+                            }else {
+                                Toasty.normal(getActivity(), "Please Select Truck Name", Toasty.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+                dialogBuilder.setView(viewf);
+                dialogBuilder.show();
+
+                break;
 
             case R.id.update:
-                if (DetectConnection.checkInternetConnection(getActivity())) {
+                if (DetectConnection.checkInternetConnection(getActivity())){
 
-                    if (editTexts.get(5).getText().toString().trim().equalsIgnoreCase("")) {
+                    if (editTexts.get(5).getText().toString().trim().equalsIgnoreCase("")){
 
                         if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
-                                && validate(editTexts.get(6))) {
-                            matcher = panCardPattern.matcher(editTexts.get(4).getText().toString());
+                                && validate(editTexts.get(6)) && validateTextView(materialtype)) {
+                            matcher = pattern.matcher(editTexts.get(4).getText().toString());
                             if (matcher.matches()) {
                                 Update();
                             } else {
@@ -127,13 +418,129 @@ public class Profile extends Fragment {
                             }
                         }
 
+                    }else {
+
+                        if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
+                                && validate(editTexts.get(5)) && validate(editTexts.get(6)) && validateTextView(materialtype)) {
+                            matcher = pattern.matcher(editTexts.get(4).getText().toString());
+                            if (matcher.matches()) {
+                                matcher = gstpattern.matcher(editTexts.get(5).getText().toString());
+                                if (matcher.matches()) {
+                                    Update();
+                                } else {
+                                    editTexts.get(5).requestFocus();
+                                    editTexts.get(5).setError("Invalid GST Number");
+                                }
+                            } else {
+                                editTexts.get(4).requestFocus();
+                                editTexts.get(4).setError("Invalid PAN Number");
+                            }
+                        }
                     }
 
-                } else {
-                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                }else {
+                    TastyToast.makeText(getActivity(), "No Internet Connection", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
                 }
                 break;
         }
+    }
+
+    private void showPictureDialog() {
+        final CharSequence[] items = { "Take Photo", "Choose from Gallery", "Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result= Utility.checkPermission(getActivity());
+
+                if (items[item].equals("Take Photo")) {
+                    userChoosenTask ="Take Photo";
+                    if(result)
+                        cameraIntent();
+
+                } else if (items[item].equals("Choose from Gallery")) {
+                    userChoosenTask ="Choose from Library";
+                    if(result)
+                        galleryIntent();
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }*/
+
+    private void galleryIntent()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+    }
+
+    private void cameraIntent()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        truckimageView.setImageBitmap(bitmap);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+
+        bitmap=null;
+        if (data != null) {
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        truckimageView.setImageBitmap(bitmap);
+    }
+
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
+        return encodedImage;
     }
 
 
@@ -174,30 +581,54 @@ public class Profile extends Fragment {
     }
 
 
-    private void Update() {
 
+
+    private void getTruckDetails() {
+
+
+        recyclerView.clearOnScrollListeners();
+        truckDetailsList.clear();
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("id", MainPage.userId);
-        requestParams.put("first_name", editTexts.get(0).getText().toString());
-        requestParams.put("last_name", editTexts.get(1).getText().toString());
-        requestParams.put("email", editTexts.get(2).getText().toString());
-        requestParams.put("contact", editTexts.get(3).getText().toString());
-        requestParams.put("pancard_card_number", editTexts.get(4).getText().toString());
-        requestParams.put("gst_number", editTexts.get(5).getText().toString());
-        requestParams.put("address", editTexts.get(6).getText().toString());
+        requestParams.put("userId", MainPage.userId);
 
-        asyncHttpClient.post(UpdateProfileURl, requestParams, new AsyncHttpResponseHandler() {
+        asyncHttpClient.get(VendorTruckListURL, requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String s = new String(responseBody);
                 try {
                     JSONObject jsonObject = new JSONObject(s);
-                    if (jsonObject.getString("success").equalsIgnoreCase("1")){
-                        Toast.makeText(getActivity(), "Update Done", Toast.LENGTH_SHORT).show();
-                        getProfile();
-                    }else if (jsonObject.getString("success").equalsIgnoreCase("0")){
-                        Toast.makeText(getActivity(), "Update Fail", Toast.LENGTH_SHORT).show();
+                    JSONArray jsonArray = jsonObject.getJSONArray("success");
+                    if (jsonArray.length()==0){
+                        recyclerView.setVisibility(View.GONE);
+
+                    }else {
+                        for (int i=0;i<jsonArray.length();i++){
+                            jsonObject = jsonArray.getJSONObject(i);
+
+                            TruckDetails truckDetails = new TruckDetails();
+                        /*    truckDetails.setTruckId(jsonObject.getString("truck_dt_id"));
+                            truckDetails.setTrucknumber(jsonObject.getString("trucknumber"));
+                            truckDetails.setTruckcapacity(jsonObject.getString("truckcapacity"));
+                            truckDetails.setTruckheight(jsonObject.getString("truckheight"));
+                            truckDetails.setTruckweight(jsonObject.getString("truckweight"));
+                            truckDetails.setTrucktyres(jsonObject.getString("trucktyres"));
+                            truckDetails.setTrucklength(jsonObject.getString("trucklength"));
+                            truckDetails.setTruckImages(jsonObject.getString("truckimage"));
+                            truckDetails.setTruckType(jsonObject.getString("trucktype"));*/
+
+                            truckDetailsList.add(truckDetails);
+
+                         /*   adapter = new TruckDetailsAdapter(truckDetailsList, getActivity());
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            adapter.notifyItemInserted(truckDetailsList.size() - 1);
+                            recyclerView.setHasFixedSize(true);*/
+
+                            recyclerView.setVisibility(View.VISIBLE);
+
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -206,9 +637,12 @@ public class Profile extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getActivity(),"Server Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_LONG).show();
+                recyclerView.setVisibility(View.GONE);
+
             }
         });
+
 
     }
 

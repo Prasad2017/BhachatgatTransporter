@@ -69,7 +69,7 @@
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/light_black"
                     android:fontFamily="@font/montserratregular"
-                    android:hint="Mobile Number *"
+                    android:hint="Phone no/ फोन नं. *"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:maxLength="10"

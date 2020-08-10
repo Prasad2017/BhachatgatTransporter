@@ -3,61 +3,225 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    xmlns:whatever="http://schemas.android.com/apk/res-auto"
+    android:background="#F1F1F1"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/btn_back"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
 
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/carborder"
+            android:text="Basic Details"
+            android:id="@+id/basic" />
 
-    <androidx.core.widget.NestedScrollView
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:background="@drawable/bikeborder"
+            android:text="Truck Details"
+            android:id="@+id/truck" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/nestedView">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/detailsLinear">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:id="@+id/nestedView">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:id="@+id/loginLinearLayout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        whatever:boxCornerRadiusBottomEnd="5dp"
+                        whatever:boxCornerRadiusBottomStart="5dp"
+                        whatever:boxCornerRadiusTopEnd="5dp"
+                        whatever:boxCornerRadiusTopStart="5dp"
+                        android:gravity="center"
+                        whatever:boxStrokeColor="@color/light_black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/light_black">
+
+                        <EditText
+                            android:id="@+id/fname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:hint="Enter Full Name (Ex.Demo)"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textSize="16sp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:drawableLeft="@drawable/name"
+                            android:drawableTint="@color/colorAccent"
+                            android:drawablePadding="10dp"
+                            android:layout_gravity="center|left"
+                            android:gravity="center|left"
+                            android:fontFamily="@font/montserratregular"
+                            android:padding="15dp"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        whatever:boxCornerRadiusBottomEnd="5dp"
+                        whatever:boxCornerRadiusBottomStart="5dp"
+                        whatever:boxCornerRadiusTopEnd="5dp"
+                        whatever:boxCornerRadiusTopStart="5dp"
+                        android:gravity="center"
+                        whatever:boxStrokeColor="@color/light_black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/light_black">
+
+                        <EditText
+                            android:id="@+id/lname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:hint="Enter Last Name (Ex.Demo)"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textSize="16sp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:drawableLeft="@drawable/name"
+                            android:drawableTint="@color/colorAccent"
+                            android:drawablePadding="10dp"
+                            android:layout_gravity="center|left"
+                            android:gravity="center|left"
+                            android:fontFamily="@font/montserratregular"
+                            android:layout_weight="1"
+                            android:padding="15dp"
+                            android:imeOptions="actionNext"
+                            android:textStyle="bold"
+                            android:inputType="text"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>>
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    app:boxCornerRadiusBottomEnd="5dp"
-                    app:boxCornerRadiusBottomStart="5dp"
-                    app:boxCornerRadiusTopEnd="5dp"
-                    app:boxCornerRadiusTopStart="5dp"
+                    android:layout_marginTop="10dp"
+                    whatever:boxCornerRadiusBottomEnd="5dp"
+                    whatever:boxCornerRadiusBottomStart="5dp"
+                    whatever:boxCornerRadiusTopEnd="5dp"
+                    whatever:boxCornerRadiusTopStart="5dp"
                     android:gravity="center"
-                    app:boxStrokeColor="@color/light_black"
+                    whatever:boxStrokeColor="@color/light_black"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="@color/light_black">
 
                     <EditText
-                        android:id="@+id/fname"
+                        android:id="@+id/mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:hint="Enter Full Name (Ex.Demo)"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/montserratregular"
+                        android:hint="Enter Mobile (Ex.9876543210)"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:drawableLeft="@drawable/contact"
+                        android:drawableTint="@color/colorAccent"
                         android:textSize="16sp"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:drawablePadding="10dp"
                         android:layout_gravity="center|left"
                         android:gravity="center|left"
-                        android:fontFamily="@font/montserratmedium"
-                        android:padding="15dp"
-                        android:layout_weight="1"
                         android:textStyle="bold"
+                        android:padding="15dp"
+                        android:digits="0123456789"
+                        android:inputType="numberDecimal"
                         android:imeOptions="actionNext"
-                        android:inputType="text"/>
+                        android:focusable="false"
+                        android:singleLine="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    whatever:boxCornerRadiusBottomEnd="5dp"
+                    whatever:boxCornerRadiusBottomStart="5dp"
+                    whatever:boxCornerRadiusTopEnd="5dp"
+                    whatever:boxCornerRadiusTopStart="5dp"
+                    android:gravity="center"
+                    whatever:boxStrokeColor="@color/light_black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:textColorHint="@color/light_black">
+
+                    <EditText
+                        android:id="@+id/pancard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:drawablePadding="10dp"
+                        android:hint="Enter Pan Card (Ex.ASDER2134H)"
+                        android:fontFamily="@font/montserratregular"
+                        android:maxLength="10"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center|left"
+                        android:gravity="center|left"
+                        android:drawableLeft="@drawable/card"
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="15dp"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:capitalize="characters"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,251 +230,164 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    app:boxCornerRadiusBottomEnd="5dp"
-                    app:boxCornerRadiusBottomStart="5dp"
-                    app:boxCornerRadiusTopEnd="5dp"
-                    app:boxCornerRadiusTopStart="5dp"
+                    whatever:boxCornerRadiusBottomEnd="5dp"
+                    whatever:boxCornerRadiusBottomStart="5dp"
+                    whatever:boxCornerRadiusTopEnd="5dp"
+                    whatever:boxCornerRadiusTopStart="5dp"
                     android:gravity="center"
-                    app:boxStrokeColor="@color/light_black"
+                    whatever:boxStrokeColor="@color/light_black"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="@color/light_black">
 
                     <EditText
-                        android:id="@+id/lname"
+                        android:id="@+id/gstnumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:hint="Enter Last Name (Ex.Demo)"
+                        android:paddingLeft="10dp"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/montserratregular"
+                        android:hint="Enter GST (Ex.27AAPFU0939F1ZV)"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:textSize="16sp"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:drawableTint="@color/colorAccent"
-                        android:drawablePadding="10dp"
-                        android:layout_gravity="center|left"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
                         android:gravity="center|left"
-                        android:fontFamily="@font/montserratmedium"
-                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/card"
+                        android:textStyle="bold"
+                        android:drawableTint="@color/colorAccent"
                         android:padding="15dp"
                         android:imeOptions="actionNext"
-                        android:textStyle="bold"
-                        android:inputType="text"/>
+                        android:textAllCaps="true"
+                        android:inputType="textCapCharacters"
+                        android:capitalize="characters"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>
 
-                </com.google.android.material.textfield.TextInputLayout>>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    whatever:boxCornerRadiusBottomEnd="5dp"
+                    whatever:boxCornerRadiusBottomStart="5dp"
+                    whatever:boxCornerRadiusTopEnd="5dp"
+                    whatever:boxCornerRadiusTopStart="5dp"
+                    android:gravity="center"
+                    whatever:boxStrokeColor="@color/light_black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:textColorHint="@color/light_black">
+
+                    <EditText
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:paddingLeft="10dp"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/montserratregular"
+                        android:hint="Enter Address (Ex.Pune)"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:gravity="center|left"
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/address"
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="15dp"
+                        android:imeOptions="actionNext"
+                        android:inputType="textMultiLine"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    whatever:boxCornerRadiusBottomEnd="5dp"
+                    whatever:boxCornerRadiusBottomStart="5dp"
+                    whatever:boxCornerRadiusTopEnd="5dp"
+                    whatever:boxCornerRadiusTopStart="5dp"
+                    android:gravity="center"
+                    whatever:boxStrokeColor="@color/light_black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:textColorHint="@color/light_black">
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:drawableLeft="@drawable/email"
+                        android:drawableTint="@color/colorAccent"
+                        android:drawablePadding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Enter Email (Ex.demo@gmail.com)"
+                        android:textSize="16sp"
+                        android:layout_gravity="center|left"
+                        android:gravity="center|left"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserratregular"
+                        android:padding="15dp"
+                        android:inputType="textEmailAddress"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/update"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/updateborder"
+                    android:text="Update"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="5dp"
-                app:boxCornerRadiusBottomStart="5dp"
-                app:boxCornerRadiusTopEnd="5dp"
-                app:boxCornerRadiusTopStart="5dp"
-                android:gravity="center"
-                app:boxStrokeColor="@color/light_black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/light_black">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/truckLinear">
 
-                <EditText
-                    android:id="@+id/mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/montserratmedium"
-                    android:hint="Enter Mobile (Ex.9876543210)"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:maxLength="10"
-                    android:drawableTint="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:layout_gravity="center|left"
-                    android:gravity="center|left"
-                    android:textStyle="bold"
-                    android:padding="15dp"
-                    android:digits="0123456789"
-                    android:inputType="numberDecimal"
-                    android:imeOptions="actionNext"
-                    android:focusable="false"
-                    android:singleLine="true"/>
+        <Button
+            android:id="@+id/addtruck"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_dialog_button"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="Add Truck" />
 
-            </com.google.android.material.textfield.TextInputLayout>>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:layout_margin="5dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="5dp"
-                app:boxCornerRadiusBottomStart="5dp"
-                app:boxCornerRadiusTopEnd="5dp"
-                app:boxCornerRadiusTopStart="5dp"
-                android:gravity="center"
-                app:boxStrokeColor="@color/light_black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/light_black">
-
-                <EditText
-                    android:id="@+id/pancard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:drawablePadding="10dp"
-                    android:hint="Enter Pan Card (Ex.ASDER2134H)"
-                    android:fontFamily="@font/montserratmedium"
-                    android:maxLength="10"
-                    android:textSize="16sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center|left"
-                    android:gravity="center|left"
-                    android:drawableTint="@color/colorAccent"
-                    android:padding="15dp"
-                    android:inputType="textCapCharacters"
-                    android:textAllCaps="true"
-                    android:textStyle="bold"
-                    android:capitalize="characters"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="5dp"
-                app:boxCornerRadiusBottomStart="5dp"
-                app:boxCornerRadiusTopEnd="5dp"
-                app:boxCornerRadiusTopStart="5dp"
-                android:gravity="center"
-                app:boxStrokeColor="@color/light_black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/light_black">
-
-                <EditText
-                    android:id="@+id/gstnumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/montserratmedium"
-                    android:hint="Enter GST (Ex.27AAPFU0939F1ZV)"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:gravity="center|left"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/colorAccent"
-                    android:padding="15dp"
-                    android:imeOptions="actionNext"
-                    android:textAllCaps="true"
-                    android:inputType="textCapCharacters"
-                    android:capitalize="characters"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="5dp"
-                app:boxCornerRadiusBottomStart="5dp"
-                app:boxCornerRadiusTopEnd="5dp"
-                app:boxCornerRadiusTopStart="5dp"
-                android:gravity="center"
-                app:boxStrokeColor="@color/light_black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/light_black">
-
-                <EditText
-                    android:id="@+id/address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/montserratmedium"
-                    android:hint="Enter Address (Ex.Pune)"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:gravity="center|left"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/colorAccent"
-                    android:padding="15dp"
-                    android:imeOptions="actionNext"
-                    android:inputType="textMultiLine"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="5dp"
-                app:boxCornerRadiusTopStart="5dp"
-                android:gravity="center"
-                app:boxStrokeColor="@color/light_black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/light_black">
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:drawableTint="@color/colorAccent"
-                    android:drawablePadding="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:hint="Enter Email (Ex.demo@gmail.com)"
-                    android:textSize="16sp"
-                    android:layout_gravity="center|left"
-                    android:gravity="center|left"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/montserratmedium"
-                    android:padding="15dp"
-                    android:inputType="textEmailAddress"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <TextView
-                android:id="@+id/update"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/updateborder"
-                android:text="Update"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:fontFamily="@font/montserratmedium"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 </LinearLayout>
-

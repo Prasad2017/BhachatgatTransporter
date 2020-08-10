@@ -55,6 +55,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +63,7 @@ import retrofit2.Response;
 public class Registration extends AppCompatActivity {
 
     @BindViews({R.id.firstName, R.id.lastName, R.id.mobileNumber, R.id.address, R.id.aadharCard, R.id.panCard, R.id.planterArea, R.id.dryArea, R.id.emailID, R.id.password, R.id.bankName,
-            R.id.accountNumber, R.id.branchName, R.id.iFSC, R.id.middleName})
+            R.id.accountNumber, R.id.branchName, R.id.iFSC, R.id.middleName, R.id.companyName, R.id.confirmPassword})
     List<FormEditText> formEditTexts;
     @BindView(R.id.imageView)
     ImageView imageView;
@@ -92,15 +93,15 @@ public class Registration extends AppCompatActivity {
         formEditTexts.get(3).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(6).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(7).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        formEditTexts.get(8).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        formEditTexts.get(9).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        //  formEditTexts.get(9).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(10).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(11).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(12).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         formEditTexts.get(14).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        formEditTexts.get(15).setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-        formEditTexts.get(13).setFilters(new InputFilter[] {new InputFilter.AllCaps()});
-        formEditTexts.get(5).setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        formEditTexts.get(5).setFilters(new InputFilter[] {new InputFilter.LengthFilter(10), new InputFilter.AllCaps()});
+        formEditTexts.get(13).setFilters(new InputFilter[] {new InputFilter.LengthFilter(11), new InputFilter.AllCaps()});
 
         choosePhotoHelper = ChoosePhotoHelper.with(this)
                 .asFilePath()
@@ -160,28 +161,53 @@ public class Registration extends AppCompatActivity {
             case R.id.signIn:
 
                 if (formEditTexts.get(0).testValidity() && formEditTexts.get(1).testValidity() && formEditTexts.get(2).testValidity() && formEditTexts.get(3).testValidity() && formEditTexts.get(4).testValidity()
-                        && formEditTexts.get(5).testValidity() && formEditTexts.get(6).testValidity() && formEditTexts.get(7).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()) {
+                        && formEditTexts.get(5).testValidity() && formEditTexts.get(8).testValidity() && formEditTexts.get(9).testValidity()) {
 
-                    matcher = pattern.matcher(formEditTexts.get(5).getText().toString());
+                    if (formEditTexts.get(2).getText().toString().trim().length() == 10) {
 
-                    if (matcher.matches()) {
-                        String imageString = "";
+                        if (formEditTexts.get(4).getText().toString().trim().length() == 12) {
 
-                        if (imageView.getDrawable() != null) {
-                            bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                            imageString = getStringImage(bitmap);
+                            if (formEditTexts.get(5).getText().toString().trim().length() == 10) {
+
+                                matcher = pattern.matcher(formEditTexts.get(5).getText().toString());
+
+                                if (matcher.matches()) {
+                                    String imageString = "";
+
+                                    if (formEditTexts.get(16).getText().toString().equals(formEditTexts.get(9).getText().toString())) {
+
+                                        if (imageView.getDrawable() != null) {
+                                            bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                                            imageString = getStringImage(bitmap);
+
+                                            registration(imageString, formEditTexts.get(15).getText().toString(), formEditTexts.get(0).getText().toString(), formEditTexts.get(1).getText().toString(), formEditTexts.get(2).getText().toString(), formEditTexts.get(3).getText().toString(),
+                                                    formEditTexts.get(4).getText().toString(), formEditTexts.get(5).getText().toString(), formEditTexts.get(6).getText().toString(), formEditTexts.get(7).getText().toString(),
+                                                    formEditTexts.get(8).getText().toString(), formEditTexts.get(9).getText().toString(), formEditTexts.get(10).getText().toString(), formEditTexts.get(11).getText().toString(),
+                                                    formEditTexts.get(12).getText().toString(), formEditTexts.get(13).getText().toString(), formEditTexts.get(14).getText().toString());
+
+                                        } else {
+                                            Toasty.error(Registration.this, "Select profile image", Toasty.LENGTH_SHORT).show();
+                                        }
+                                    }else {
+                                        formEditTexts.get(16).setError("Enter valid confirm passwordoi");
+                                        formEditTexts.get(16).requestFocus();
+                                    }
+                                } else {
+                                    formEditTexts.get(5).setError("Enter valid pan number");
+                                    formEditTexts.get(5).requestFocus();
+                                }
+                            } else {
+                                formEditTexts.get(5).setError("Enter valid pan number");
+                                formEditTexts.get(5).requestFocus();
+                            }
                         } else {
-                            imageString = "";
+                            formEditTexts.get(4).setError("Enter valid aadhar number");
+                            formEditTexts.get(4).requestFocus();
                         }
 
-                        registration(imageString, formEditTexts.get(0).getText().toString(), formEditTexts.get(1).getText().toString(), formEditTexts.get(2).getText().toString(), formEditTexts.get(3).getText().toString(),
-                                formEditTexts.get(4).getText().toString(), formEditTexts.get(5).getText().toString(), formEditTexts.get(6).getText().toString(), formEditTexts.get(7).getText().toString(),
-                                formEditTexts.get(8).getText().toString(), formEditTexts.get(9).getText().toString(), formEditTexts.get(10).getText().toString(), formEditTexts.get(11).getText().toString(),
-                                formEditTexts.get(12).getText().toString(), formEditTexts.get(13).getText().toString(), formEditTexts.get(14).getText().toString());
-
                     } else {
-                        formEditTexts.get(5).setError("Enter valid pan number");
-                        formEditTexts.get(5).requestFocus();
+                        formEditTexts.get(2).setError("Enter valid mobile number");
+                        formEditTexts.get(2).requestFocus();
                     }
                 }
 
@@ -189,7 +215,7 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    private void registration(String profilePhoto, String firstName, String lastName, String mobileNumber, String address, String aadharCard, String panCard, String planterArea, String dryArea, String emailId, String password, String bankName, String accountNumber, String branchNme, String iFSC, String middleName) {
+    private void registration(String profilePhoto, String companyName, String firstName, String lastName, String mobileNumber, String address, String aadharCard, String panCard, String planterArea, String dryArea, String emailId, String password, String bankName, String accountNumber, String branchNme, String iFSC, String middleName) {
 
         ProgressDialog progressDialog = new ProgressDialog(Registration.this);
         progressDialog.setMessage("Loading...");
@@ -199,7 +225,7 @@ public class Registration extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<LoginResponse> call = apiInterface.Registration(profilePhoto, firstName, lastName, mobileNumber, address, aadharCard, panCard, planterArea, dryArea, emailId, password, bankName, accountNumber, branchNme, iFSC, middleName);
+        Call<LoginResponse> call = apiInterface.Registration(profilePhoto, companyName, firstName, lastName, mobileNumber, address, aadharCard, panCard, planterArea, dryArea, emailId, password, bankName, accountNumber, branchNme, iFSC, middleName);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
