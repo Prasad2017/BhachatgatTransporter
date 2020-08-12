@@ -1,0 +1,124 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:tint="@color/black"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:src="@drawable/close"
+            android:id="@+id/close"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Enter Driver Information"
+        android:layout_centerInParent="true"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="@font/montserratmedium"
+        android:layout_margin="5dp"/>
+
+    <com.github.siyamed.shapeimageview.RoundedImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/editextborder"
+        app:siRadius="6dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        app:siSquare="true"
+        android:id="@+id/imageView"/>
+
+    <EditText
+        android:id="@+id/edit1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:hint="Enter Driver Name"
+        android:paddingLeft="15dp"
+        android:ellipsize="end"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:textSize="18sp"
+        android:fontFamily="@font/montserratregular"
+        android:textStyle="bold"
+        android:background="@drawable/editextborder"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:hint="Enter driver mobile number"
+        android:paddingLeft="15dp"
+        android:ellipsize="end"
+        android:inputType="numberDecimal"
+        android:maxLength="10"
+        android:textSize="18sp"
+        android:digits="0123456789"
+        android:fontFamily="@font/montserratregular"
+        android:textStyle="bold"
+        android:background="@drawable/editextborder"/>
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/truckspinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="TruckNumber"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:paddingLeft="10dp"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:maxLength="6"
+        android:background="@drawable/spinnerbackground"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/updateborder"
+        android:fontFamily="@font/montserratmedium"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Submit"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

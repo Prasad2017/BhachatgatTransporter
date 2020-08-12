@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_overlay"
+        android:foreground="@android:color/transparent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <!--  <ImageView
+                  android:id="@+id/edit"
+                  android:layout_width="30dp"
+                  android:layout_height="30dp"
+                  android:layout_weight="1"
+                  android:layout_gravity="center|left"
+                  android:gravity="center"
+                  android:paddingLeft="5dp"
+                  android:text="Edit"
+                  android:src="@drawable/pencil"
+                  android:tint="@color/colorPrimary"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/edit"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center|left"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:layout_alignParentLeft="true"
+                    android:text="Edit"
+                    android:src="@drawable/pencil"
+                    android:tint="@color/colorPrimary"/>
+
+                <ImageView
+                    android:id="@+id/expand"
+                    android:textSize="18sp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center|right"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="5dp"
+                    android:src="@drawable/arrowdown"
+                    android:tint="@color/black"/>
+
+            </RelativeLayout>
+            <TextView
+                android:textSize="16sp"
+                android:hint="Truck Name"
+                android:id="@+id/truckname"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:fontFamily="@font/montserratregular"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="5dp"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="18sp"
+                    android:hint="Truck Number"
+                    android:id="@+id/trucknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black" />
+
+                <!-- <ImageView
+                     android:id="@+id/expand"
+                     android:textSize="18sp"
+                     android:layout_width="30dp"
+                     android:layout_height="30dp"
+                     android:layout_weight="1"
+                     android:layout_gravity="center|right"
+                     android:gravity="center"
+                     android:layout_centerVertical="true"
+                     android:layout_alignParentRight="true"
+                     android:paddingLeft="5dp"
+                     android:src="@drawable/arrowdown"
+                     android:tint="@color/black"/>-->
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/sub_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:hint="Truck Width"
+                    android:id="@+id/truckweight"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+
+                <TextView
+                    android:textSize="16sp"
+                    android:hint="Truck Capacity"
+                    android:id="@+id/truckcapacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+                <TextView
+                    android:textSize="16sp"
+                    android:hint="Truck Height"
+                    android:id="@+id/truckheight"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:id="@+id/trucklength"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:visibility="gone"
+                    android:paddingLeft="5dp"
+                    android:fontFamily="@font/montserratregular"
+                    android:hint="Truck length"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:textSize="16sp"
+                    android:hint="Truck Tyres"
+                    android:id="@+id/trucktyres"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"/>
+
+                <TextView
+                    android:textSize="16sp"
+                    android:text="RC Book"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:fontFamily="@font/montserratregular"
+                    android:singleLine="true"/>
+
+                <com.github.siyamed.shapeimageview.RoundedImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/editextborder"
+                    app:siRadius="6dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    app:siSquare="true"
+                    android:id="@+id/imageView"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+

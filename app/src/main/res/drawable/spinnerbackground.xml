@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <gradient android:angle="0" android:endColor="@color/white" android:startColor="@color/white" android:type="linear" /><!--For gradient nav_icon-->
+
+                    <stroke android:width="0.2dp" android:color="@color/black" /><!--For Border nav_icon-->
+
+                    <corners android:radius="3dp" /><!--For nav_icon corner-->
+
+                    <padding  android:left="0dp" android:top="1.5dp" android:bottom="1.5dp" android:right="2dp"/><!--For padding for all sides-->
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="right|center" android:src="@drawable/arrowspin" android:tint="@color/colorPrimary"/> // Replace with your Icon
+
+            </item>
+        </layer-list>
+    </item>
+</selector>

@@ -3,6 +3,7 @@ package com.graminvikreta_transporter.Fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,10 +39,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.graminvikreta_transporter.Activity.Login;
 import com.graminvikreta_transporter.Activity.MainPage;
 import com.graminvikreta_transporter.Adapter.TruckDetailsAdapter;
 import com.graminvikreta_transporter.Extra.Config;
 import com.graminvikreta_transporter.Extra.DetectConnection;
+import com.graminvikreta_transporter.Extra.Utility;
 import com.graminvikreta_transporter.Model.TruckDetails;
 import com.graminvikreta_transporter.R;
 import com.loopj.android.http.AsyncHttpClient;
@@ -87,14 +95,11 @@ public class Profile extends Fragment {
     List<TruckDetails> truckDetailsList = new ArrayList<>();
     AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
     TruckDetailsAdapter adapter;
-    public static String VendorTruckDetailsURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/VendorTruckDetails.php";
-    public static String VendorTruckListURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/VendorTruckList.php";
-    public String getProfile = "http://softmate.in/androidApp/Qsar/DeliveryBoy/GetProfile.php";
-    public String UpdateProfileURl = "http://softmate.in/androidApp/Qsar/DeliveryBoy/UpdateProfile.php";
-    public static final String msgsend="http://softmate.in/androidApp/Lift/sms_langSuposrt.php";
-    public static String TruckURL="http://softmate.in/androidApp/Qsar/getTruck.php";
-    public static String TruckCapacityURL="http://softmate.in/androidApp/Qsar/DeliveryBoy/getCapacity.php";
-    public static String MaterialURL="http://softmate.in/androidApp/Qsar/Materialtype.php";
+    public static String VendorTruckDetailsURL="http://graminvikreta.com/androidApp/Transporter/VendorTruckDetails.php";
+    public static String VendorTruckListURL="http://graminvikreta.com/androidApp/Transporter/VendorTruckList.php";
+    public String getProfile = "http://graminvikreta.com/androidApp/Transporter/getProfile.php";
+    public String UpdateProfileURl = "http://graminvikreta.com/androidApp/Transporter/UpdateProfile.php";
+    public static final String msgSend="http://graminvikreta.com/androidApp/Supplier/sendSMS.php";
 
     Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
     Pattern trucknumberpattern = Pattern.compile("[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}");
@@ -106,7 +111,8 @@ public class Profile extends Fragment {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     public Bitmap bitmap;
     private String userChoosenTask, imageString, trucknumber;
-
+    RequestQueue requestQueue;
+    JsonObjectRequest objectRequest;
 
 
     @Override
@@ -137,14 +143,9 @@ public class Profile extends Fragment {
         return view;
     }
 
-    /*@OnClick({R.id.basic, R.id.truck, R.id.addtruck, R.id.update, R.id.materialtype})
+    @OnClick({R.id.basic, R.id.truck, R.id.addtruck, R.id.update})
     public void onClick(View view) {
         switch (view.getId()) {
-
-            case R.id.materialtype:
-                showSelectMaterialDialog();
-                break;
-
 
             case R.id.basic:
 
@@ -189,142 +190,6 @@ public class Profile extends Fragment {
                 truckimageView = (ImageView) viewf.findViewById(R.id.imageView);
                 final TextView save = (TextView) viewf.findViewById(R.id.save);
 
-                //Select Truck Name
-                requestQueue= Volley.newRequestQueue(getActivity());
-                objectRequest=new JsonObjectRequest(Request.Method.GET, TruckURL, null, new com.android.volley.Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONArray jsonArray=response.getJSONArray("success");
-
-                            if (jsonArray.length()==0){
-
-                            }else {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                    Truck material = new Truck();
-                                    material.setType_id(jsonObject.getString("truck_id"));
-                                    material.setType_name(jsonObject.getString("truck_type"));
-                                    truckList.add(material);
-
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-                requestQueue.add(objectRequest);
-
-                final ArrayAdapter ctype = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, truckList);
-                ctype.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-                trucktypespin.setAdapter(ctype);
-
-
-                //Select Truck Capacity
-                requestQueue= Volley.newRequestQueue(getActivity());
-                objectRequest=new JsonObjectRequest(Request.Method.GET, TruckCapacityURL, null, new com.android.volley.Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONArray jsonArray=response.getJSONArray("success");
-
-                            if (jsonArray.length()==0){
-
-                            }else {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                    Truck material = new Truck();
-                                    material.setType_id(jsonObject.getString("capacity_id"));
-                                    material.setType_name(jsonObject.getString("capacity_value"));
-                                    trucktonList.add(material);
-
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-                requestQueue.add(objectRequest);
-
-                final ArrayAdapter tontype = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, trucktonList);
-                tontype.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-                truckcapacityspin.setAdapter(tontype);
-
-                try{
-
-                    edttrucknumber.setSelection(edttrucknumber.getText().toString().length());
-                    edttruckweight.setSelection(edttruckweight.getText().toString().length());
-                    edttruckheight.setSelection(edttruckheight.getText().toString().length());
-                    edttrucklength.setSelection(edttrucklength.getText().toString().length());
-                    // edttruckcapacity.setSelection(edttruckcapacity.getText().toString().length());
-                    edttrucktyres.setSelection(edttrucktyres.getText().toString().length());
-
-                    edttrucknumber.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                trucktypespin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                        TruckTypeValue = String.valueOf(adapterView.getItemAtPosition(position));
-                        Log.e("TruckTypeValue", ""+TruckTypeValue);
-                        Toasty.normal(getActivity(), "TruckTypeValue"+TruckTypeValue, Toasty.LENGTH_SHORT).show();
-                        try {
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(getActivity().getResources().getColor(R.color.black));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-                truckcapacityspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                        TruckCapacityValue = String.valueOf(adapterView.getItemAtPosition(position));
-                        Toasty.normal(getActivity(), "TruckCapacityValue"+TruckCapacityValue, Toasty.LENGTH_SHORT).show();
-                        try {
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(getActivity().getResources().getColor(R.color.black));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
                 btn_close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -345,14 +210,17 @@ public class Profile extends Fragment {
                         if (truckimageView.getDrawable() == null) {
                             Toasty.normal(getActivity(), "Please Select RC Book Image", Toasty.LENGTH_SHORT).show();
                         } else {
-                            if (TruckTypeValue!=null) {
                                 if (validate(edttrucknumber) && validate(edttrucktyres)) {
                                     matcher = trucknumberpattern.matcher(edttrucknumber.getText().toString().trim());
                                     if (matcher.matches()) {
 
-
                                         imageString = getStringImage(bitmap);
 
+                                        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                                        progressDialog.setMessage("Loading...");
+                                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                        progressDialog.show();
+                                        progressDialog.setCancelable(false);
 
                                         RequestParams requestParams = new RequestParams();
                                         requestParams.put("trucknumber", edttrucknumber.getText().toString());
@@ -369,10 +237,11 @@ public class Profile extends Fragment {
                                                 try {
                                                     JSONObject jsonObject = new JSONObject(s);
                                                     if (jsonObject.getString("success").equalsIgnoreCase("1")) {
-
+                                                        progressDialog.dismiss();
                                                         dialogBuilder.dismiss();
                                                         getTruckDetails();
                                                     } else if (jsonObject.getString("success").equalsIgnoreCase("0")) {
+                                                        progressDialog.dismiss();
                                                         dialogBuilder.dismiss();
                                                     }
                                                 } catch (JSONException e) {
@@ -382,6 +251,7 @@ public class Profile extends Fragment {
 
                                             @Override
                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                             progressDialog.dismiss();
                                               dialogBuilder.dismiss();
                                             }
                                         });
@@ -390,9 +260,7 @@ public class Profile extends Fragment {
                                         edttrucknumber.setError("Invalid Truck Number");
                                     }
                                 }
-                            }else {
-                                Toasty.normal(getActivity(), "Please Select Truck Name", Toasty.LENGTH_SHORT).show();
-                            }
+
                         }
                     }
                 });
@@ -408,7 +276,7 @@ public class Profile extends Fragment {
                     if (editTexts.get(5).getText().toString().trim().equalsIgnoreCase("")){
 
                         if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
-                                && validate(editTexts.get(6)) && validateTextView(materialtype)) {
+                                && validate(editTexts.get(6))) {
                             matcher = pattern.matcher(editTexts.get(4).getText().toString());
                             if (matcher.matches()) {
                                 Update();
@@ -421,7 +289,7 @@ public class Profile extends Fragment {
                     }else {
 
                         if (validate(editTexts.get(0)) && Config.validateEmail(editTexts.get(2), getActivity()) && validate(editTexts.get(3)) && validate(editTexts.get(4))
-                                && validate(editTexts.get(5)) && validate(editTexts.get(6)) && validateTextView(materialtype)) {
+                                && validate(editTexts.get(5)) && validate(editTexts.get(6))) {
                             matcher = pattern.matcher(editTexts.get(4).getText().toString());
                             if (matcher.matches()) {
                                 matcher = gstpattern.matcher(editTexts.get(5).getText().toString());
@@ -439,10 +307,56 @@ public class Profile extends Fragment {
                     }
 
                 }else {
-                    TastyToast.makeText(getActivity(), "No Internet Connection", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
+                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
+    }
+
+    private void Update() {
+
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("id", MainPage.userId);
+        requestParams.put("first_name", editTexts.get(0).getText().toString());
+        requestParams.put("last_name", editTexts.get(1).getText().toString());
+        requestParams.put("email", editTexts.get(2).getText().toString());
+        requestParams.put("contact", editTexts.get(3).getText().toString());
+        requestParams.put("pancard_card_number", editTexts.get(4).getText().toString());
+        requestParams.put("gst_number", editTexts.get(5).getText().toString());
+        requestParams.put("address", editTexts.get(6).getText().toString());
+
+        asyncHttpClient.post(UpdateProfileURl, requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.getString("success").equalsIgnoreCase("1")){
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "Update Done", Toast.LENGTH_SHORT).show();
+                        getProfile();
+                    }else if (jsonObject.getString("success").equalsIgnoreCase("0")){
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "Update Fail", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(),"Server Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void showPictureDialog() {
@@ -471,7 +385,7 @@ public class Profile extends Fragment {
             }
         });
         builder.show();
-    }*/
+    }
 
     private void galleryIntent()
     {
@@ -582,7 +496,6 @@ public class Profile extends Fragment {
 
 
 
-
     private void getTruckDetails() {
 
 
@@ -607,7 +520,7 @@ public class Profile extends Fragment {
                             jsonObject = jsonArray.getJSONObject(i);
 
                             TruckDetails truckDetails = new TruckDetails();
-                        /*    truckDetails.setTruckId(jsonObject.getString("truck_dt_id"));
+                            truckDetails.setTruckId(jsonObject.getString("truck_dt_id"));
                             truckDetails.setTrucknumber(jsonObject.getString("trucknumber"));
                             truckDetails.setTruckcapacity(jsonObject.getString("truckcapacity"));
                             truckDetails.setTruckheight(jsonObject.getString("truckheight"));
@@ -615,16 +528,16 @@ public class Profile extends Fragment {
                             truckDetails.setTrucktyres(jsonObject.getString("trucktyres"));
                             truckDetails.setTrucklength(jsonObject.getString("trucklength"));
                             truckDetails.setTruckImages(jsonObject.getString("truckimage"));
-                            truckDetails.setTruckType(jsonObject.getString("trucktype"));*/
+                            truckDetails.setTruckType(jsonObject.getString("trucktype"));
 
                             truckDetailsList.add(truckDetails);
 
-                         /*   adapter = new TruckDetailsAdapter(truckDetailsList, getActivity());
+                            adapter = new TruckDetailsAdapter(truckDetailsList, getActivity());
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                             recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                             adapter.notifyItemInserted(truckDetailsList.size() - 1);
-                            recyclerView.setHasFixedSize(true);*/
+                            recyclerView.setHasFixedSize(true);
 
                             recyclerView.setVisibility(View.VISIBLE);
 
@@ -639,7 +552,6 @@ public class Profile extends Fragment {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_LONG).show();
                 recyclerView.setVisibility(View.GONE);
-
             }
         });
 
