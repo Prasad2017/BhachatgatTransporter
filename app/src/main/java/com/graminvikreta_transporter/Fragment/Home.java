@@ -334,6 +334,7 @@ public class Home extends Fragment {
                     cardViews.get(0).setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Currently there is no order", Toast.LENGTH_SHORT).show();
                 } else {
+
                     //Set Adapter...
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                     linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

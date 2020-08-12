@@ -133,7 +133,7 @@ public class TruckLoadDetails extends Fragment {
                 final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
                 final View f = inflater.inflate(R.layout.driver_dialog_vendor, null);
                 dialogBuilder.setCancelable(false);
-                Button submit = (Button)f.findViewById(R.id.submit);
+                TextView submit = (TextView) f.findViewById(R.id.submit);
                 final ImageView close = (ImageView) f.findViewById(R.id.close);
                 driverimageView = (ImageView) f.findViewById(R.id.imageView);
                 final EditText editText1 = (EditText) f.findViewById(R.id.edit1);
@@ -232,7 +232,8 @@ public class TruckLoadDetails extends Fragment {
                                 requestParams.put("order_id", order_id);
                                 requestParams.put("order_status", order_status);
                                 requestParams.put("vendorId", MainPage.userId);
-                                Toast.makeText(getActivity(), ""+order_status, Toast.LENGTH_SHORT).show();
+
+
                                 asyncHttpClient.post("http://graminvikreta.com/androidApp/Transporter/AddDriverDetails.php", requestParams, new AsyncHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -243,56 +244,6 @@ public class TruckLoadDetails extends Fragment {
                                             if (jsonObject.getString("success").equalsIgnoreCase("1")) {
 
                                                 progressDialog.dismiss();
-
-                                                String message = "Your order has been order picked up by "+MainPage.name+"( "+MainPage.contact+" )"+" successfully.\n Thank you.";
-                                                String encoded_message= URLEncoder.encode(message);
-
-                                                ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                                                progressDialog.setMessage("Loading...");
-                                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                progressDialog.show();
-                                                progressDialog.setCancelable(false);
-
-                                                RequestParams requestParams=new RequestParams();
-                                                requestParams.put("number", MainPage.contact);
-                                                requestParams.put("message", encoded_message);
-
-                                                asyncHttpClient.get(msgsend, requestParams, new AsyncHttpResponseHandler() {
-                                                    @Override
-                                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                        String s=new String(responseBody);
-                                                        try {
-                                                            JSONObject jsonObject=new JSONObject(s);
-
-                                                            if (jsonObject.getString("success").equals("1"))
-                                                            {
-                                                                progressDialog.dismiss();
-                                                                swipeButtonView.get(1).setVisibility(View.VISIBLE);
-                                                                swipeButtonView.get(0).setVisibility(View.GONE);
-                                                                getConfirmPickup(order_id, order_status);
-                                                                dialogBuilder.dismiss();
-                                                            }else {
-                                                                progressDialog.dismiss();
-                                                                swipeButtonView.get(1).setVisibility(View.VISIBLE);
-                                                                swipeButtonView.get(0).setVisibility(View.GONE);
-
-                                                                dialogBuilder.dismiss();
-                                                            }
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-
-                                                    }
-                                                    @Override
-                                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                        progressDialog.dismiss();
-                                                        swipeButtonView.get(1).setVisibility(View.VISIBLE);
-                                                        swipeButtonView.get(0).setVisibility(View.GONE);
-
-                                                        dialogBuilder.dismiss();
-                                                    }
-                                                });
-                                            }else if (order_status.equalsIgnoreCase("order_complete")){
 
                                                 String message = "Your order has been order delivered by "+MainPage.name+"( "+MainPage.contact+" )"+" successfully.\n Thank you.";
                                                 String encoded_message= URLEncoder.encode(message);
@@ -407,7 +358,7 @@ public class TruckLoadDetails extends Fragment {
                             textViews.get(0).setText(jsonObject.getString("full_name").equals("null")?"-":jsonObject.getString("full_name"));
                             textViews.get(1).setText(jsonObject.getString("mobileno").equals("null")?"-":jsonObject.getString("mobileno"));
                             textViews.get(2).setText(jsonObject.getString("source_address").equals("null")?"-":jsonObject.getString("source_address"));
-                            textViews.get(3).setText(jsonObject.getString("billing_address").equals("null")?"-":jsonObject.getString("c_delivery_location"));
+                            textViews.get(3).setText(jsonObject.getString("billing_address").equals("null")?"-":jsonObject.getString("billing_address"));
                             textViews.get(4).setText(jsonObject.getString("product_name").equals("")?"0":jsonObject.getString("product_name"));
                             textViews.get(5).setText(jsonObject.getString("quantity").equals("")?"0":jsonObject.getString("quantity"));
 
